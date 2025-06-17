@@ -3,7 +3,7 @@
 	import { House, LogOut, Share2, SlidersHorizontal, SquareLibrary } from 'lucide-svelte';
 </script>
 
-<div class="flex flex-col items-start justify-start px-6 py-4">
+<div class="flex flex-col items-start justify-start px-4 py-4">
 	<ul class="menu bg-primary/20 lg:menu-horizontal rounded-box">
 		<li>
 			<a href="/" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Data Raum">
