@@ -4,17 +4,17 @@
 </script>
 
 <div class="flex flex-col items-end justify-end px-4 py-4">
-	<ul class="menu bg-primary/20 rounded-box">
+	<ul class="menu bg-primary/20 menu-horizontal rounded-box">
 		<li>
-			<a href="/settings" class="tooltip tooltip-left" data-tip="Settings">
+			<a href="/settings" class="tooltip tooltip-bottom" data-tip="Settings">
 				<SlidersHorizontal class="h-5 w-5" />
 			</a>
 		</li>
 		<li>
-			<div class="tooltip tooltip-left" data-tip="Sign Out">
+			<div class="tooltip tooltip-bottom" data-tip="Sign Out">
 				<!-- SignOut component handles the sign out process -->
 				<!-- The LogOut icon is displayed as the button -->
-				<SignOut signOutPage="signout" options={{ redirectTo: '/' }}>
+				<SignOut className="h-5" signOutPage="signout" options={{ redirectTo: '/' }}>
 					<div slot="submitButton">
 						<LogOut class="h-5 w-5" />
 					</div>

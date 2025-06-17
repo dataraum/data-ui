@@ -3,7 +3,7 @@
 </script>
 
 <div class="flex flex-col items-start justify-start px-4 py-4">
-	<ul class="menu bg-primary/20 lg:menu-horizontal rounded-box">
+	<ul class="menu bg-primary/20 menu-horizontal rounded-box">
 		<li>
 			<a href="/" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Data Raum">
 				<House class="h-5 w-5" />
