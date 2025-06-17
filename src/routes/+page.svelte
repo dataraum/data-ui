@@ -6,11 +6,11 @@
 </script>
 
 <div class="flex h-screen">
-	<div class="bg-base-200 flex w-1/4 flex-col">
+	<div class="bg-base-100 flex w-1/4 flex-col">
 		<TopLeftNav />
 		<SidePrompt />
 	</div>
-	<div class="bg-base-100 overflow-hidden flex-1">
+	<div class="bg-base-300 overflow-hidden flex-1">
 		<div class="flex flex-col h-full">
 			<!-- Header -->
 			<div class="flex flex-row justify-between">

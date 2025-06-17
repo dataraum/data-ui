@@ -56,7 +56,7 @@
 	<!-- List icon from lucide-svelte -->
     <HistoryModal />
 	<textarea
-		class="border-primary/25 bg-primary/25 flex-1 resize-none overflow-y-hidden rounded border p-2"
+		class="border-primary bg-primary/50 flex-1 resize-none overflow-y-hidden rounded border p-2"
 		rows="1"
 		bind:this={textarea}
 		placeholder="Type and press Enter to send"

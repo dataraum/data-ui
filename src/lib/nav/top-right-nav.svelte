@@ -4,7 +4,7 @@
 </script>
 
 <div class="flex flex-col items-end justify-end px-4 py-4">
-	<ul class="menu bg-primary/25 menu-horizontal rounded-box">
+	<ul class="menu menu-horizontal rounded-box">
 		<li>
 			<a href="/shared" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Shared Data">
 				<Share2 class="h-5 w-5" />
