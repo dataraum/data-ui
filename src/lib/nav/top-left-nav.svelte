@@ -1,6 +1,5 @@
 <script>
-	import { SignOut } from '@auth/sveltekit/components';
-	import { House, LogOut, Share2, SlidersHorizontal, SquareLibrary } from 'lucide-svelte';
+	import { House, Share2, SquareLibrary } from 'lucide-svelte';
 </script>
 
 <div class="flex flex-col items-start justify-start px-4 py-4">
@@ -19,18 +18,6 @@
 			<a href="/shared" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Shared Data">
 				<Share2 class="h-5 w-5" />
 			</a>
-		</li>
-		<li>
-			<a href="/settings" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Settings">
-				<SlidersHorizontal class="h-5 w-5" />
-			</a>
-		</li>
-		<li>
-			<SignOut>
-				<div slot="submitButton" class="flex tooltip tooltip-right lg:tooltip-bottom" data-tip="Sign Out">
-					<LogOut class="h-5 w-5" />
-				</div>
-			</SignOut>
 		</li>
 	</ul>
 </div>

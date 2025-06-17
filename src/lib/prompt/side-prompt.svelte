@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { List } from 'lucide-svelte';
-
 	import { onMount } from 'svelte';
+	import HistoryModal from './history-modal.svelte';
 	let textarea: HTMLTextAreaElement | null = null;
 
 	function autoResize() {
@@ -55,13 +54,13 @@
 <!-- The textarea automatically resizes based on content -->
 <div class="items-top flex p-2">
 	<!-- List icon from lucide-svelte -->
-	<List class="mt-1.5 mr-2 h-5 w-5" />
+    <HistoryModal />
 	<textarea
 		class="border-primary/30 bg-primary/10 flex-1 resize-none overflow-y-hidden rounded border p-2"
 		rows="1"
 		bind:this={textarea}
 		placeholder="Type and press Enter to send"
-		on:keydown={handleKeyDown}
-		on:input={autoResize}
+		onkeydown={handleKeyDown}
+		oninput={autoResize}
 	></textarea>
 </div>
