@@ -11,15 +11,15 @@
 </script>
 
 <button
-	class="btn btn-square bg-accent/60 btn-accent tooltip tooltip-top mr-1.5"
-	data-tip="History"
+	class="btn btn-square bg-accent/25 border-secondary/25 tooltip tooltip-top mr-1.5 h-10 w-10"
+	data-tip="Projects"
 	onclick={showModal}
 >
 	<FileStack class="h-5 w-5" /></button
 >
 <dialog id="historyModal" class="modal modal-bottom sm:modal-middle">
 	<div class="modal-box">
-		<h3 class="text-lg font-bold">Future prompt history</h3>
+		<h3 class="text-lg font-bold">Future project list</h3>
 		<p class="py-4">Press ESC key or click the button below to close</p>
 		<div class="modal-action">
 			<form method="dialog">
