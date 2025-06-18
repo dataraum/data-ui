@@ -11,7 +11,7 @@
 </script>
 
 <button
-	class="btn btn-square bg-accent/50 border-secondary tooltip tooltip-top mr-1.5 h-10 w-10 border rounded-sm"
+	class="btn btn-square btn-ghost tooltip tooltip-bottom h-8 w-11"
 	data-tip="Projects"
 	onclick={showModal}
 >

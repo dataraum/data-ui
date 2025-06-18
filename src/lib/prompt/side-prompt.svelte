@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import HistoryModal from './projects-modal.svelte';
 	let textarea: HTMLTextAreaElement | null = null;
 
 	function autoResize() {
@@ -38,9 +37,37 @@
 </script>
 
 <!-- This is the main content area -->
-<div class="flex-grow overflow-y-auto p-4">
+<div class="flex-grow overflow-y-auto px-4 py-2 mt-0.5">
 	<!-- Main content goes here -->
 	<p>
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
+		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+		labore et dolore magna aliqua.
+	</p>
+	<p class="mt-4">
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
 		labore et dolore magna aliqua.
 	</p>
@@ -54,9 +81,8 @@
 <!-- The textarea automatically resizes based on content -->
 <div class="items-top flex p-2">
 	<!-- List icon from lucide-svelte -->
-    <HistoryModal />
 	<textarea
-		class="border-primary bg-primary/50 flex-1 resize-none overflow-y-hidden rounded border p-2"
+		class="bg-primary/60 flex-1 resize-none overflow-y-hidden rounded-sm p-2 mx-1.5 text-shadow-none text-primary-content text-sm focus:border-primary-focus focus:outline-none"
 		rows="1"
 		bind:this={textarea}
 		placeholder="Type and press Enter to send"
