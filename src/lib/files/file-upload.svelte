@@ -62,14 +62,14 @@
 </script>
 
 <button
-	class="btn bg-primary/10 flex h-full w-full max-w-md flex-col items-center justify-center py-4 rounded-sm hover:bg-primary/20"
+	class="btn bg-primary/10 dark:bg-primary/70 hover:bg-primary/20 dark:hover:bg-primary flex h-full w-full max-w-md flex-col items-center justify-center rounded-md py-4"
 	ondrop={handleDrop}
 	ondragover={handleDragOver}
 	onclick={() => fileInput?.click()}
 	aria-label="File upload drop area"
 >
 	<CloudUpload class="h-40 w-40" />
-	<span class="text-primary/90 text-sm">[or click to select files]</span>
+	<span class="text-sm">[or click to select files]</span>
 	{#if $uploading}
 		<span class="loading loading-spinner loading-md mt-4"></span>
 	{/if}

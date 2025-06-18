@@ -15,13 +15,14 @@
 			</button>
 		</li>
 		<li>
-			<a
-				href="/project-settings"
+			<button
+				onclick={() =>
+					(document.getElementById('projectSettingsModal') as HTMLDialogElement).showModal()}
 				class="tooltip tooltip-right lg:tooltip-bottom"
 				data-tip="Project Settings"
 			>
 				<FolderOpenDot class="h-5 w-5" />
-			</a>
+			</button>
 		</li>
 		<li>
 			<button
