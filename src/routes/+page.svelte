@@ -5,6 +5,7 @@
 	import SidePrompt from '$lib/prompt/side-prompt.svelte';
 	import UploadModal from '$lib/files/upload-modal.svelte';
 	import NoYetModal from '$lib/components/nyi/no-yet-modal.svelte';
+	import UploadedModal from '$lib/files/uploaded-modal.svelte';
 </script>
 
 <!-- This is the main layout for the application, combining navigation and content areas -->
@@ -21,6 +22,12 @@
 <!-- The layout is designed to be maintainable and easy to extend -->
 <section>
 	<UploadModal />
+	<UploadedModal />
+	<!-- Modal for features not yet implemented -->
+	<!-- This modal is triggered when the user tries to access a feature that is not yet available -->
+	<!-- It provides a message indicating that the feature is coming soon -->
+	<!-- The modal is designed to be user-friendly and informative -->
+	<!-- The modal can be closed by the user -->
 	<NoYetModal />
 </section>
 <section class="flex h-screen">

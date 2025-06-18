@@ -49,6 +49,10 @@
 			error.set('Upload failed');
 		} finally {
 			uploading.set(false);
+			if (!error) {
+				(document.getElementById('dataUploadModal') as HTMLDialogElement)?.close();
+				(document.getElementById('dataUploadedModal') as HTMLDialogElement)?.showModal();
+			}
 		}
 	}
 
