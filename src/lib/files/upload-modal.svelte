@@ -6,7 +6,7 @@
 	const error = writable<string | null>(null);
 </script>
 
-<dialog id="dataUploadModal" class="modal">
+<dialog id="dataUploadModal" class="modal" onclose={() => error.set(null)}>
 	<div class="modal-box">
 		<form method="dialog">
 			<button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2">✕</button>
@@ -15,4 +15,7 @@
 		<div class="mx-2 mt-4"><FileUpload {error} /></div>
 		<div class="mx-2 mt-4"><ErrorAlert {error} /></div>
 	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
 </dialog>
