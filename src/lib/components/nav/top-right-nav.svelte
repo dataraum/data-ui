@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { SignOut } from '@auth/sveltekit/components';
 	import { House, LogOut, Share2, SlidersHorizontal, SquareLibrary } from 'lucide-svelte';
 </script>
@@ -16,9 +16,14 @@
 			</a>
 		</li>
 		<li>
-			<a href="/shared" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Shared Data">
+			<button
+				onclick={() =>
+					(document.getElementById('noYetImplementedModal') as HTMLDialogElement).showModal()}
+				class="tooltip tooltip-right lg:tooltip-bottom"
+				data-tip="Shared Data"
+			>
 				<Share2 class="h-5 w-5" />
-			</a>
+			</button>
 		</li>
 		<li>
 			<a href="/settings" class="tooltip tooltip-bottom" data-tip="Settings">
