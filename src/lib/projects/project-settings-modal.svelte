@@ -12,7 +12,8 @@
 		message: projectMessage,
 		reset: resetProjectForm
 	} = superForm(data.projectForm, {
-		resetForm: true
+		resetForm: true,
+		invalidateAll: 'pessimistic'
 	});
 </script>
 

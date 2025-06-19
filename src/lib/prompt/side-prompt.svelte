@@ -84,6 +84,7 @@
 	<textarea
 		class="bg-primary/60 flex-1 resize-none overflow-y-hidden rounded-sm p-2 mx-1.5 text-shadow-none text-primary-content text-sm focus:border-primary-focus focus:outline-none"
 		rows="1"
+		name="chat-input"
 		bind:this={textarea}
 		placeholder="Type and press Enter to send"
 		onkeydown={handleKeyDown}
