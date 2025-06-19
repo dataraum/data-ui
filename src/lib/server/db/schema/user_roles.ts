@@ -8,7 +8,7 @@ import {
   pgSchema,
 } from "drizzle-orm/pg-core"
 
-export const urSchema = pgSchema("user_roles")
+export const urSchema = pgSchema("user_roles");
  
 export const users = urSchema.table("user", {
   id: text("id")
@@ -18,7 +18,7 @@ export const users = urSchema.table("user", {
   email: text("email").unique(),
   emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
-})
+});
  
 export const accounts = urSchema.table(
   "account",
@@ -44,7 +44,7 @@ export const accounts = urSchema.table(
       }),
     },
   ]
-)
+);
  
 export const sessions = urSchema.table("session", {
   sessionToken: text("session_token").primaryKey(),
@@ -52,7 +52,7 @@ export const sessions = urSchema.table("session", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
-})
+});
  
 export const verificationTokens = urSchema.table(
   "verification_token",
@@ -68,7 +68,7 @@ export const verificationTokens = urSchema.table(
       }),
     },
   ]
-)
+);
  
 export const authenticators = urSchema.table(
   "authenticator",
@@ -91,4 +91,4 @@ export const authenticators = urSchema.table(
       }),
     },
   ]
-)
+);
