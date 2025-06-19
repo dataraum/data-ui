@@ -1,15 +1,66 @@
 import { redirect } from "@sveltejs/kit"
-import type { PageServerLoad } from "./$types"
- 
+import type { Actions, PageServerLoad } from "./$types"
+import { fail } from '@sveltejs/kit';
+import { message, superValidate } from 'sveltekit-superforms';
+import { zod4 } from 'sveltekit-superforms/adapters';
+import { z } from 'zod/v4';
+
+const projectSchema = z.object({
+  name: z.string().min(4).max(128),
+  description: z.string().min(12).max(512),
+  owner: z.email(),
+}).required({
+  name: true,
+  description: true,
+  owner: true
+});
+
+const workspaceSchema = z.object({
+  companyName: z.string().max(128).default('My Company'),
+  companyDescription: z.string().max(512).default('This is a company description'),
+  teamName: z.string().max(128).default('My Team'),
+  teamDescription: z.string().max(512).default('This is a team description'),
+  workspacePurpose: z.string().max(512).default('This is the purpose of the workspace'),
+  workspaceOwner: z.email(),
+}).required({
+  teamName: true,
+  workspaceOwner: true
+});
+
 export const load: PageServerLoad = async (events) => {
   const session = await events.locals.auth()
   console.log("Session:", session);
- 
+
   if (!session?.user?.email) {
     redirect(303, `/signin`)
   }
- 
+
+  const projectForm = await superValidate(zod4(projectSchema));
+  const workspaceForm = await superValidate(zod4(workspaceSchema));
+
+  console.log("Project Form:", projectForm);
+
   return {
-    session,
+    session, projectForm, workspaceForm
   }
 }
+
+export const actions = {
+  projects: async ({ request }) => {
+    const projectForm = await superValidate(request, zod4(projectSchema));
+
+    if (!projectForm.valid) return fail(400, { projectForm });
+
+    // TODO: Login user
+    return message(projectForm, 'Project form submitted');
+  },
+
+  workspace: async ({ request }) => {
+    const workspaceForm = await superValidate(request, zod4(workspaceSchema));
+
+    if (!workspaceForm.valid) return fail(400, { workspaceForm });
+
+    // TODO: Register user
+    return message(workspaceForm, 'Workspace form submitted');
+  }
+} satisfies Actions;

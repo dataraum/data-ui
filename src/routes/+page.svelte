@@ -7,6 +7,8 @@
 	import NoYetModal from '$lib/components/nyi/no-yet-modal.svelte';
 	import UploadedModal from '$lib/files/uploaded-modal.svelte';
 	import ProjectSettingsModal from '$lib/projects/project-settings-modal.svelte';
+
+  	let { data } = $props();
 </script>
 
 <!-- This is the main layout for the application, combining navigation and content areas -->
@@ -18,15 +20,15 @@
 	<UploadModal />
 	<UploadedModal />
 	<NoYetModal />
-	<ProjectSettingsModal />
+	<ProjectSettingsModal {data} />
 </section>
 <section class="flex h-screen">
-	<div class="dark:bg-base-100 bg-base-200 flex w-1/4 flex-col">
+	<div class="bg-base-200 flex w-1/4 flex-col">
 		<TopLeftNav />
 		<SidePrompt />
 	</div>
 	<div class="flex-1 overflow-hidden">
-		<div class="dark:bg-base-100 bg-base-200 flex h-full flex-col">
+		<div class="bg-base-200 flex h-full flex-col">
 			<!-- Header -->
 			<div class="flex flex-row justify-between">
 				<div class="mt-2 flex items-center justify-start pl-4">
@@ -37,7 +39,7 @@
 				</div>
 			</div>
 			<!-- Content Area -->
-			<div class="dark:bg-base-300 bg-base-100 flex-1 overflow-y-auto px-4 py-2">
+			<div class="bg-base-100 flex-1 overflow-y-auto px-4 py-2">
 				<MdList />
 			</div>
 		</div>

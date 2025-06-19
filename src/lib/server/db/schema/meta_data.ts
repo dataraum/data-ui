@@ -16,7 +16,6 @@ export const projects = mdSchema.table("projects", {
     projectDescription: text("project_description"),
     projectOwner: text("project_owner")
         .references(() => users.id, { onDelete: "set null" }),
-    projectStatus: text("project_status").notNull(),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
         .default(sql`now()`),

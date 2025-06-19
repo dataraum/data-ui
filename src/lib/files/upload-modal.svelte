@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
 	import FileUpload from './file-upload.svelte';
-	import ErrorAlert from '$lib/components/error/error-alert.svelte';
+	import ErrorAlert from '$lib/components/alerts/error-alert.svelte';
 	import BaseModal from '$lib/components/modal/base-modal.svelte';
 
 	const error = writable<string | null>(null);
