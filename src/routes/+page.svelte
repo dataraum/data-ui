@@ -32,7 +32,7 @@
 			<!-- Header -->
 			<div class="flex flex-row justify-between">
 				<div class="mt-2 flex items-center justify-start pl-4">
-					<h1 class="mb-2 text-2xl font-bold">[PROJECT-NAME]</h1>
+					<h1 class="mb-2 text-2xl font-bold">{data.projectForm.data.name || "[PROJECT-NAME]"}</h1>
 				</div>
 				<div>
 					<TopRightNav />

@@ -4,15 +4,16 @@ import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { z } from 'zod/v4';
+import { mdDb } from "$lib/server/db";
+import { projects } from "$lib/server/db/schema/meta_data";
+import { desc } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 const projectSchema = z.object({
+  id: z.uuid().optional(),
   name: z.string().min(4).max(128),
   description: z.string().min(12).max(512),
   owner: z.email(),
-}).required({
-  name: true,
-  description: true,
-  owner: true
 });
 
 const workspaceSchema = z.object({
@@ -22,9 +23,6 @@ const workspaceSchema = z.object({
   teamDescription: z.string().max(512).default('This is a team description'),
   workspacePurpose: z.string().max(512).default('This is the purpose of the workspace'),
   workspaceOwner: z.email(),
-}).required({
-  teamName: true,
-  workspaceOwner: true
 });
 
 export const load: PageServerLoad = async (events) => {
@@ -35,10 +33,22 @@ export const load: PageServerLoad = async (events) => {
     redirect(303, `/signin`)
   }
 
-  const projectForm = await superValidate(zod4(projectSchema));
-  const workspaceForm = await superValidate(zod4(workspaceSchema));
+  const projectData = await mdDb
+    .select({
+      id: projects.id,
+      name: projects.projectName,
+      description: projects.projectDescription,
+      owner: projects.projectOwner,
+    })
+    .from(projects)
+    .orderBy(desc(projects.createdAt))
+    .limit(1);
 
-  console.log("Project Form:", projectForm);
+  const project = projectData ? projectData[0] : {};
+  console.log("Project Data:", project);
+
+  const projectForm = await superValidate(project, zod4(projectSchema));
+  const workspaceForm = await superValidate(zod4(workspaceSchema));
 
   return {
     session, projectForm, workspaceForm
@@ -51,8 +61,24 @@ export const actions = {
 
     if (!projectForm.valid) return fail(400, { projectForm });
 
-    // TODO: Login user
-    return message(projectForm, 'Project form submitted');
+    if (projectForm.data.id) {
+      await mdDb.update(projects)
+        .set({
+          projectName: projectForm.data.name,
+          projectDescription: projectForm.data.description,
+          projectOwner: projectForm.data.owner,
+        })
+        .where(eq(projects.id, projectForm.data.id));
+      return message(projectForm, 'Project updated successfully');
+    } else if (!projectForm.data.id) {
+      const result = await mdDb.insert(projects).values({
+        projectName: projectForm.data.name,
+        projectDescription: projectForm.data.description,
+        projectOwner: projectForm.data.owner,
+      }).returning({ insertedId: projects.id });
+      projectForm.data.id = result[0].insertedId;
+      return message(projectForm, 'Project created successfully');
+    }
   },
 
   workspace: async ({ request }) => {

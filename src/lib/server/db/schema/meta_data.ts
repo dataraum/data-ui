@@ -15,14 +15,14 @@ export const projects = mdSchema.table("projects", {
     projectName: text("project_name").unique(),
     projectDescription: text("project_description"),
     projectOwner: text("project_owner")
-        .references(() => users.id, { onDelete: "set null" }),
+        .references(() => users.email, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
         .default(sql`now()`),
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const projectMembers = mdSchema.table("project_members", {
@@ -32,7 +32,7 @@ export const projectMembers = mdSchema.table("project_members", {
     projectId: text("project_id")
         .references(() => projects.id, { onDelete: "cascade" }),
     userId: text("user_id")
-        .references(() => users.id, { onDelete: "set null" }),
+        .references(() => users.email, { onDelete: "set null" }),
     role: text("role").notNull(),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
@@ -40,7 +40,7 @@ export const projectMembers = mdSchema.table("project_members", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 // TODO: This could be split into multiple tables 
@@ -55,14 +55,14 @@ export const workspace = mdSchema.table("workspace", {
     teamDescription: text("team_description"),
     workspacePurpose: text("workspace_purpose"),
     workspaceOwner: text("workspace_owner")
-        .references(() => users.id, { onDelete: "set null" }),
+        .references(() => users.email, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
         .default(sql`now()`),
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 // TODO: Tables could bbe linked to projects or workspaces, or teams
@@ -79,7 +79,7 @@ export const tables = mdSchema.table("tables", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const tableColumns = mdSchema.table("table_columns", {
@@ -97,7 +97,7 @@ export const tableColumns = mdSchema.table("table_columns", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const tableSampledRows = mdSchema.table("table_sampled_rows", {
@@ -113,7 +113,7 @@ export const tableSampledRows = mdSchema.table("table_sampled_rows", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const tableRelationships = mdSchema.table("table_relationships", {
@@ -132,7 +132,7 @@ export const tableRelationships = mdSchema.table("table_relationships", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const tableIndexes = mdSchema.table("table_indexes", {
@@ -152,7 +152,7 @@ export const tableIndexes = mdSchema.table("table_indexes", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const tableConstraints = mdSchema.table("table_constraints", {
@@ -170,7 +170,7 @@ export const tableConstraints = mdSchema.table("table_constraints", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 });
 
 export const tableComments = mdSchema.table("table_comments", {
@@ -186,5 +186,5 @@ export const tableComments = mdSchema.table("table_comments", {
     updatedAt: timestamp("updated_at", { mode: "date" })
         .notNull()
         .default(sql`now()`)
-        .$onUpdate(() => sql`now()`),
+        .$onUpdate(() => new Date()),
 }); 

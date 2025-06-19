@@ -43,6 +43,7 @@
 				<p class="label text-red-300">{$projectErrors.description}</p>
 			{/if}
 			<input type="hidden" name="owner" value={data.session.user.email} />
+			<input type="hidden" name="id" value={$projectForm.id} />
 			<button type="submit" class="btn btn-neutral mt-4">Save</button>
 		</fieldset>
 	</form>

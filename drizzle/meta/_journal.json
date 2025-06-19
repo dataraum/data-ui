@@ -8,6 +8,20 @@
       "when": 1750087614826,
       "tag": "0000_whole_chamber",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1750370064684,
+      "tag": "0001_lethal_hex",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750371400614,
+      "tag": "0002_puzzling_leech",
+      "breakpoints": true
     }
   ]
 }
