@@ -7,6 +7,7 @@
 	import NoYetModal from '$lib/components/nyi/no-yet-modal.svelte';
 	import UploadedModal from '$lib/files/uploaded-modal.svelte';
 	import ProjectSettingsModal from '$lib/projects/project-settings-modal.svelte';
+	import WorkspaceSettingsModal from '$lib/workspace/workspace-settings-modal.svelte';
 
   	let { data } = $props();
 </script>
@@ -21,6 +22,7 @@
 	<UploadedModal />
 	<NoYetModal />
 	<ProjectSettingsModal {data} />
+	<WorkspaceSettingsModal {data} />
 </section>
 <section class="flex h-screen">
 	<div class="bg-base-200 flex w-1/4 flex-col">
@@ -32,7 +34,7 @@
 			<!-- Header -->
 			<div class="flex flex-row justify-between">
 				<div class="mt-2 flex items-center justify-start pl-4">
-					<h1 class="mb-2 text-2xl font-bold">{data.projectForm.data.name || "[PROJECT-NAME]"}</h1>
+					<h1 class="mb-2 text-2xl font-bold">{data.projectForm.data.projectName || "[PROJECT-NAME]"}</h1>
 				</div>
 				<div>
 					<TopRightNav />

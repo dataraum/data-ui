@@ -26,9 +26,12 @@
 			</button>
 		</li>
 		<li>
-			<a href="/settings" class="tooltip tooltip-bottom" data-tip="Settings">
+			<button
+				onclick={() =>
+					(document.getElementById('workspaceSettingsModal') as HTMLDialogElement).showModal()}
+					 class="tooltip tooltip-bottom" data-tip="Settings">
 				<SlidersHorizontal class="h-5 w-5" />
-			</a>
+			</button>
 		</li>
 		<li>
 			<div class="tooltip tooltip-bottom" data-tip="Sign Out">

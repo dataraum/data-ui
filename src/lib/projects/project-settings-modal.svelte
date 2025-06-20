@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SuccessAlert from '$lib/components/alerts/success-alert.svelte';
 	import BaseModal from '$lib/components/modal/base-modal.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -20,33 +19,33 @@
 <BaseModal id="projectSettingsModal" onclose={() => resetProjectForm()}>
 	<form method="POST" action="?/projects" use:projectEnhance>
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
-			<legend class="fieldset-legend text-lg">Project settings</legend>
-
-			<label class="label" for="project-name">Project same</label>
+			<legend class="fieldset-legend text-lg">{$projectMessage || "Project settings"}</legend>
+			<label class="label" for="projectName">Project name</label>
 			<input
-				id="project-name"
+				id="projectName"
 				type="text"
 				class="input w-full"
-				name="name"
-				aria-invalid={$projectErrors.name ? 'true' : undefined}
-				bind:value={$projectForm.name}
+				name="projectName"
+				aria-invalid={$projectErrors.projectName ? 'true' : undefined}
+				bind:value={$projectForm.projectName}
 			/>
-			{#if $projectErrors.name}<p class="label text-red-300">{$projectErrors.name}</p>{/if}
-			<label class="label mt-2" for="project-description">Project description</label>
-			<textarea
-				id="project-description"
-				class="textarea h-24 w-full"
-				name="description"
-				aria-invalid={$projectErrors.description ? 'true' : undefined}
-				bind:value={$projectForm.description}
-			></textarea>
-			{#if $projectErrors.description}
-				<p class="label text-red-300">{$projectErrors.description}</p>
+			{#if $projectErrors.projectName}
+				<p class="label text-error">{$projectErrors.projectName}</p>
 			{/if}
-			<input type="hidden" name="owner" value={data.session.user.email} />
+			<label class="label mt-2" for="projectDescription">Project description</label>
+			<textarea
+				id="projectDescription"
+				class="textarea h-24 w-full"
+				name="projectDescription"
+				aria-invalid={$projectErrors.projectDescription ? 'true' : undefined}
+				bind:value={$projectForm.projectDescription}
+			></textarea>
+			{#if $projectErrors.projectDescription}
+				<p class="label text-error">{$projectErrors.projectDescription}</p>
+			{/if}
+			<input type="hidden" name="projectOwner" value={data.session.user.email} />
 			<input type="hidden" name="id" value={$projectForm.id} />
-			<button type="submit" class="btn btn-neutral mt-4">Save</button>
+			<button type="submit" class="btn btn-neutral mt-4">Save project settings</button>
 		</fieldset>
 	</form>
-	<SuccessAlert msg={projectMessage} />
 </BaseModal>

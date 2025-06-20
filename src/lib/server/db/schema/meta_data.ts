@@ -8,7 +8,7 @@ import { users } from "./user_roles";
 
 export const mdSchema = pgSchema("meta_data");
 
-export const projects = mdSchema.table("projects", {
+export const projectsTable = mdSchema.table("projects", {
     id: text("id")
         .primaryKey()
         .$defaultFn(() => crypto.randomUUID()),
@@ -30,7 +30,7 @@ export const projectMembers = mdSchema.table("project_members", {
         .primaryKey()
         .$defaultFn(() => crypto.randomUUID()),
     projectId: text("project_id")
-        .references(() => projects.id, { onDelete: "cascade" }),
+        .references(() => projectsTable.id, { onDelete: "cascade" }),
     userId: text("user_id")
         .references(() => users.email, { onDelete: "set null" }),
     role: text("role").notNull(),
@@ -44,8 +44,8 @@ export const projectMembers = mdSchema.table("project_members", {
 });
 
 // TODO: This could be split into multiple tables 
-// e.g. personal, team, company, etc.
-export const workspace = mdSchema.table("workspace", {
+// e.g. team, company, etc.
+export const workspaceTable = mdSchema.table("workspace", {
     id: text("id")
         .primaryKey()
         .$defaultFn(() => crypto.randomUUID()),
