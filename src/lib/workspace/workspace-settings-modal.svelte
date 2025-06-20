@@ -16,13 +16,6 @@
 	});
 </script>
 
-<!--
-companyName: text("company_name").unique(),
-    companyDescription: text("company_description"),
-    teamName: text("team_name"),
-    teamDescription: text("team_description"),
-    workspacePurpose: text("workspace_purpose"),
--->
 <BaseModal id="workspaceSettingsModal" onclose={() => resetWspForm()}>
 	<form method="POST" action="?/workspace" use:wspEnhance>
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
