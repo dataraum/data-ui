@@ -77,7 +77,7 @@
 			{#if $wspErrors.teamDescription}
 				<p class="label text-error">{$wspErrors.teamDescription}</p>
 			{/if}
-			<input type="hidden" name="workspaceOwner" value={data.session.user.email} />
+			<input type="hidden" name="workspaceOwner" value={data.session.user.id} />
 			<input type="hidden" name="id" value={$wspForm.id} />
 			<button type="submit" class="btn btn-neutral mt-4">Update workspace settings</button>
 		</fieldset>

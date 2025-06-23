@@ -17,12 +17,11 @@ export const load: PageServerLoad = async (events) => {
 
   const projectData = await getLatestProject(session);
   const workspaceData = await getWorkspaceData(session);
-  console.log("Workspace Data:", workspaceData);
 
   const projectForm = await superValidate(projectData, zod4(projectSchema));
   const workspaceForm = await superValidate(workspaceData, zod4(workspaceSchema));
-  console.log("Workspace Form Data:", workspaceForm.data);
-  console.log("Project Form Data:", projectForm.data);
+  // console.log("Workspace Form Data:", workspaceForm.data);
+  // console.log("Project Form Data:", projectForm.data);
 
   return {
     session, projectForm, workspaceForm
@@ -43,7 +42,7 @@ export const actions = {
   workspace: async ({ request, locals }) => {
     const workspaceForm = await superValidate(request, zod4(workspaceSchema));
 
-    console.log("Workspace Form Data:", workspaceForm.data);
+    // console.log("Workspace Form Data:", workspaceForm.data);
 
     if (!workspaceForm.valid) return fail(400, { workspaceForm });
 

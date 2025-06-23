@@ -5,8 +5,6 @@ import { accounts, sessions, users, verificationTokens } from "$lib/server/db/sc
 import Resend from "@auth/sveltekit/providers/resend"
 import { AUTH_RESEND_KEY } from '$env/static/private';
 
-trustedHost: true
-
 export const { handle, signIn, signOut } = SvelteKitAuth(async () => {
     return {
         adapter: DrizzleAdapter(urDb, {
@@ -24,6 +22,12 @@ export const { handle, signIn, signOut } = SvelteKitAuth(async () => {
         session: {
             strategy: "database"
         },
+        callbacks: {
+            // also returning the user id
+            async session({ session }) {
+                return session;
+            },
+        },
         trustHost: true,
     }
-})
+});

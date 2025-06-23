@@ -9,20 +9,22 @@ export const projectSchema = z.object({
     id: z.uuid().optional(),
     projectName: z.string().min(4).max(128).nullable(),
     projectDescription: z.string().min(12).max(512).nullable(),
-    projectOwner: z.email(),
+    projectOwner: z.uuid().nonoptional(),
 });
 
 export async function getLatestProject(session: Session) {
     const projectData = await mdDb.query.projectsTable.findFirst({
-        where: eq(projectsTable.projectOwner, session.user?.email!),
+        where: eq(projectsTable.projectOwner, session.user?.id!),
         orderBy: desc(projectsTable.createdAt),
     });
     const project = projectData ?? {};
-    console.log("Project Data:", project);
+    // console.log("Project Data:", project);
     return project;
 }
 
 export async function saveProject(projectForm: any, session: Session) {
+    console.log("Saving Project:", projectForm.data);
+    console.log("Session User ID:", session.user);
     if (projectForm.data.id) {
         await mdDb.update(projectsTable)
             .set({
@@ -33,7 +35,7 @@ export async function saveProject(projectForm: any, session: Session) {
             .where(
                 and(
                     eq(projectsTable.id, projectForm.data.id), 
-                    eq(projectsTable.projectOwner, session.user?.email!)
+                    eq(projectsTable.projectOwner, session.user?.id!)
                 ));
         return message(projectForm, 'Project updated successfully');
     } else if (projectForm.data.projectName || projectForm.data.projectDescription) {

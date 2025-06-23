@@ -15,7 +15,7 @@ export const projectsTable = mdSchema.table("projects", {
     projectName: text("project_name").unique(),
     projectDescription: text("project_description"),
     projectOwner: text("project_owner")
-        .references(() => users.email, { onDelete: "set null" }),
+        .references(() => users.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
         .default(sql`now()`),
@@ -32,7 +32,7 @@ export const projectMembers = mdSchema.table("project_members", {
     projectId: text("project_id")
         .references(() => projectsTable.id, { onDelete: "cascade" }),
     userId: text("user_id")
-        .references(() => users.email, { onDelete: "set null" }),
+        .references(() => users.id, { onDelete: "set null" }),
     role: text("role").notNull(),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
@@ -55,7 +55,7 @@ export const workspaceTable = mdSchema.table("workspace", {
     teamDescription: text("team_description"),
     workspacePurpose: text("workspace_purpose"),
     workspaceOwner: text("workspace_owner")
-        .references(() => users.email, { onDelete: "set null" }),
+        .references(() => users.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at", { mode: "date" })
         .notNull()
         .default(sql`now()`),

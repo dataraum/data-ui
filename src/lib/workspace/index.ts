@@ -12,15 +12,15 @@ export const workspaceSchema = z.object({
     teamName: z.string().min(4).max(128).nullable(),
     teamDescription: z.string().min(12).max(512).nullable(),
     workspacePurpose: z.string().min(12).max(512).nullable(),
-    workspaceOwner: z.email(),
+    workspaceOwner: z.uuid().nonoptional(),
 });
 
 export async function getWorkspaceData(session: Session) {
     const workspaceData = await mdDb.query.workspaceTable.findFirst({
-        where: eq(workspaceTable.workspaceOwner, session.user?.email!),
+        where: eq(workspaceTable.workspaceOwner, session.user?.id!),
     });
     const workspace = workspaceData ?? {};
-    console.log("Workspace Data:", workspace);
+    // console.log("Workspace Data:", workspace);
     return workspace;
 }
 
@@ -34,7 +34,7 @@ export async function updateWorkspace(wspForm: any, session: Session) {
     }).where(
         and(
             eq(workspaceTable.id, wspForm.data.id), 
-            eq(workspaceTable.workspaceOwner, session.user?.email!)
+            eq(workspaceTable.workspaceOwner, session.user?.id!)
         ));
     return message(wspForm, 'Workspace updated successfully');
 }
