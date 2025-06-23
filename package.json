@@ -60,6 +60,7 @@
 		"@neondatabase/serverless": "^1.0.1",
 		"drizzle-orm": "^0.44.2",
 		"lucide-svelte": "^0.515.0",
-		"marked": "^15.0.12"
+		"marked": "^15.0.12",
+		"openai": "^5.7.0"
 	}
 }
