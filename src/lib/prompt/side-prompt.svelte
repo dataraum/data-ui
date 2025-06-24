@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	let textarea: HTMLTextAreaElement | null = null;
+
+	const { user } = $props();
+	let websocket: WebSocket;
 
 	function autoResize() {
 		if (textarea) {
@@ -11,11 +14,12 @@
 
 	async function handleSend(value: string) {
 		if (!value.trim()) return;
-		await fetch('/api/your-endpoint', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ text: value })
-		});
+		if (websocket && websocket.readyState === WebSocket.OPEN) {
+			JSON.stringify({ text: value, userId: user.id });
+			websocket.send(value);
+		} else {
+			console.error('WebSocket is not open. Cannot send message.');
+		}
 		if (textarea) {
 			textarea.value = '';
 			autoResize();
@@ -31,13 +35,49 @@
 		}
 	}
 
+	function connect(counter = 0) {
+		websocket = new WebSocket(import.meta.env.VITE_API_URL + '/' + user.apiToken);
+		console.log(websocket);
+		websocket.onmessage = (event) => {
+			console.log('Message received from server');
+			console.log(event.data);
+		};
+		websocket.onopen = (event) => {
+			websocket.send(JSON.stringify({ userId: user.id }));
+			counter = 0; // Reset counter on successful connection
+		};
+		websocket.onerror = (event) => {
+			console.log('ws error');
+			websocket.close();
+		};
+		websocket.onclose = (event) => {
+			console.log('ws over and out:', event);
+			if (event.code === 1000) {
+				console.log('WebSocket closed normally');
+				return;
+			} else {
+				console.error('WebSocket closed with error:', event.reason);
+			}
+			if (event.code < 1007 && counter < 5) {
+				setTimeout(function () {
+					connect(counter + 1);
+				}, 1000);
+			}
+		};
+	}
+
 	onMount(() => {
+		connect();
 		autoResize();
+	});
+
+	onDestroy(() => {
+		websocket?.close();
 	});
 </script>
 
 <!-- This is the main content area -->
-<div class="flex-grow overflow-y-auto px-4 py-2 mt-0.5">
+<div class="mt-0.5 flex-grow overflow-y-auto px-4 py-2">
 	<!-- Main content goes here -->
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -82,7 +122,7 @@
 <div class="items-top flex p-2">
 	<!-- List icon from lucide-svelte -->
 	<textarea
-		class="bg-primary/60 flex-1 resize-none overflow-y-hidden rounded-sm p-2 mx-1.5 text-shadow-none text-primary-content text-sm focus:border-primary-focus focus:outline-none"
+		class="bg-primary/60 text-primary-content focus:border-primary-focus mx-1.5 flex-1 resize-none overflow-y-hidden rounded-sm p-2 text-sm text-shadow-none focus:outline-none"
 		rows="1"
 		name="chat-input"
 		bind:this={textarea}

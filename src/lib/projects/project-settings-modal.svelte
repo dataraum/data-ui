@@ -43,7 +43,7 @@
 			{#if $projectErrors.projectDescription}
 				<p class="label text-error">{$projectErrors.projectDescription}</p>
 			{/if}
-			<input type="hidden" name="projectOwner" value={data.session.user.id} />
+			<input type="hidden" name="projectOwner" value={data.user.id} />
 			<input type="hidden" name="id" value={$projectForm.id} />
 			<button type="submit" class="btn btn-neutral mt-4">Save project settings</button>
 		</fieldset>

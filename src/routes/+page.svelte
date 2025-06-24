@@ -27,7 +27,7 @@
 <section class="flex h-screen">
 	<div class="bg-base-200 flex w-1/4 flex-col">
 		<TopLeftNav />
-		<SidePrompt />
+		<SidePrompt user={data.user} />
 	</div>
 	<div class="flex-1 overflow-hidden">
 		<div class="bg-base-200 flex h-full flex-col">
