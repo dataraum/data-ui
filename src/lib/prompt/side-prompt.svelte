@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	let textarea: HTMLTextAreaElement | null = null;
+	let mainContent: HTMLElement | null = null;
 
 	const { user } = $props();
 	let websocket: WebSocket;
@@ -14,9 +15,10 @@
 
 	async function handleSend(value: string) {
 		if (!value.trim()) return;
+		addTextBlock(value, 'bg-secondary/70');
 		if (websocket && websocket.readyState === WebSocket.OPEN) {
-			JSON.stringify({ text: value, userId: user.id });
-			websocket.send(value);
+			const msg = JSON.stringify({ text: value, userId: user.id });
+			websocket.send(msg);
 		} else {
 			console.error('WebSocket is not open. Cannot send message.');
 		}
@@ -35,12 +37,20 @@
 		}
 	}
 
+	function addTextBlock(text:string, style = 'bg-secondary/40') {
+		mainContent?.insertAdjacentHTML('beforeend', `<p class="mt-4 ${style} text-primary-content p-2 rounded">${text}</p>`);
+	}
+
 	function connect(counter = 0) {
 		websocket = new WebSocket(import.meta.env.VITE_API_URL + '/' + user.apiToken);
-		console.log(websocket);
 		websocket.onmessage = (event) => {
-			console.log('Message received from server');
-			console.log(event.data);
+			if (!event.data) return;
+			console.log('Received message:', event.data);
+			const data = JSON.parse(event.data);
+			console.log('Received data:', data);
+			if (!data || !data.text || !data.text.trim()) return;
+			addTextBlock(data.text.replace(/\n/g, '<br />'));
+			mainContent?.scrollTo(0, mainContent?.scrollHeight || 0);
 		};
 		websocket.onopen = (event) => {
 			websocket.send(JSON.stringify({ userId: user.id }));
@@ -68,6 +78,7 @@
 
 	onMount(() => {
 		connect();
+		mainContent?.scrollTo(0, mainContent?.scrollHeight || 0);
 		autoResize();
 	});
 
@@ -77,45 +88,7 @@
 </script>
 
 <!-- This is the main content area -->
-<div class="mt-0.5 flex-grow overflow-y-auto px-4 py-2">
-	<!-- Main content goes here -->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-	<p class="mt-4">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua.
-	</p>
-</div>
+<div class="mt-0.5 flex-grow overflow-y-auto px-4 py-2" bind:this={mainContent}></div>
 <!-- This is the chat input area -->
 <!-- It contains a textarea for user input -->
 <!-- The textarea automatically resizes based on content -->

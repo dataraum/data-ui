@@ -3,8 +3,8 @@ import type { Actions, PageServerLoad } from "./$types"
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { getLatestProject, projectSchema, saveProject } from "$lib/projects";
-import { getWorkspaceData, workspaceSchema } from "$lib/workspace";
+import { getLatestProject, ProjectSchema, saveProject } from "$lib/projects";
+import { getWorkspaceData, WorkspaceSchema } from "$lib/workspace";
 import { updateWorkspace } from "$lib/workspace";
 
 export const load: PageServerLoad = async (events) => {
@@ -17,8 +17,8 @@ export const load: PageServerLoad = async (events) => {
   const projectData = await getLatestProject(session);
   const workspaceData = await getWorkspaceData(session);
 
-  const projectForm = await superValidate(projectData, zod4(projectSchema));
-  const workspaceForm = await superValidate(workspaceData, zod4(workspaceSchema));
+  const projectForm = await superValidate(projectData, zod4(ProjectSchema));
+  const workspaceForm = await superValidate(workspaceData, zod4(WorkspaceSchema));
 
   return {
     user: session.user, projectForm, workspaceForm
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async (events) => {
 
 export const actions = {
   projects: async ({ request, locals }) => {
-    const projectForm = await superValidate(request, zod4(projectSchema));
+    const projectForm = await superValidate(request, zod4(ProjectSchema));
 
     console.log("Project Form Data:", projectForm.data);
 
@@ -37,7 +37,7 @@ export const actions = {
   },
 
   workspace: async ({ request, locals }) => {
-    const workspaceForm = await superValidate(request, zod4(workspaceSchema));
+    const workspaceForm = await superValidate(request, zod4(WorkspaceSchema));
 
     if (!workspaceForm.valid) return fail(400, { workspaceForm });
 

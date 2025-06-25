@@ -5,7 +5,7 @@ import { and, desc, eq } from 'drizzle-orm';
 import { message } from 'sveltekit-superforms';
 import { z } from 'zod/v4';
 
-export const projectSchema = z.object({
+export const ProjectSchema = z.object({
     id: z.uuid().optional(),
     projectName: z.string().min(4).max(128).nullable(),
     projectDescription: z.string().min(12).max(512).nullable(),

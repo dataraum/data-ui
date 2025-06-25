@@ -5,7 +5,7 @@ import { and, eq } from 'drizzle-orm';
 import { message } from 'sveltekit-superforms';
 import { z } from 'zod/v4';
 
-export const workspaceSchema = z.object({
+export const WorkspaceSchema = z.object({
     id: z.uuid(),
     companyName: z.string().min(4).max(128).nullable(),
     companyDescription: z.string().min(12).max(512).nullable(),
