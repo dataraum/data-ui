@@ -15,7 +15,7 @@
 
 	async function handleSend(value: string) {
 		if (!value.trim()) return;
-		addTextBlock(value, 'bg-secondary/70');
+		addTextBlock(value, 'bg-primary');
 		if (websocket && websocket.readyState === WebSocket.OPEN) {
 			const msg = JSON.stringify({ text: value, userId: user.id });
 			websocket.send(msg);
@@ -37,8 +37,8 @@
 		}
 	}
 
-	function addTextBlock(text:string, style = 'bg-secondary/40') {
-		mainContent?.insertAdjacentHTML('beforeend', `<p class="mt-4 ${style} text-primary-content p-2 rounded">${text}</p>`);
+	function addTextBlock(text:string, style = 'bg-primary/40') {
+		mainContent?.insertAdjacentHTML('beforeend', `<p class="mt-1 ${style} text-primary-content text-sm p-2 rounded">${text}</p>`);
 	}
 
 	function connect(counter = 0) {

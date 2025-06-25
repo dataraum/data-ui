@@ -1,5 +1,5 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-    themes: lofi --default, night --prefersdark;
+    themes: wireframe --default, night --prefersdark;
 }
