@@ -1,10 +1,7 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	let textarea: HTMLTextAreaElement | null = null;
 	let mainContent: HTMLElement | null = null;
-
-	const { user } = $props();
-	let websocket: WebSocket;
 
 	function autoResize() {
 		if (textarea) {
@@ -16,12 +13,25 @@
 	async function handleSend(value: string) {
 		if (!value.trim()) return;
 		addTextBlock(value, 'bg-primary');
-		if (websocket && websocket.readyState === WebSocket.OPEN) {
-			const msg = JSON.stringify({ text: value, userId: user.id });
-			websocket.send(msg);
-		} else {
-			console.error('WebSocket is not open. Cannot send message.');
+
+		const response = await fetch('/aiapi/openai', {
+			method: 'GET',
+			headers: {
+				'content-type': 'application/json'
+			}
+		});
+
+		let reader = response.body?.getReader();
+		let result;
+		let decoder = new TextDecoder('utf8');
+		let paragraph = addTextBlock("");
+		while (!result?.done) {
+			result = await reader?.read();
+			let chunk = decoder.decode(result?.value);
+			paragraph.innerText += chunk;
+			mainContent?.scrollTo(0, mainContent?.scrollHeight || 0);
 		}
+
 		if (textarea) {
 			textarea.value = '';
 			autoResize();
@@ -39,52 +49,14 @@
 
 	function addTextBlock(text:string, style = 'bg-primary/40') {
 		mainContent?.insertAdjacentHTML('beforeend', `<p class="mt-1 ${style} text-primary-content text-sm p-2 rounded">${text}</p>`);
-	}
-
-	function connect(counter = 0) {
-		websocket = new WebSocket(import.meta.env.VITE_API_URL + '/' + user.apiToken);
-		websocket.onmessage = (event) => {
-			if (!event.data) return;
-			console.log('Received message:', event.data);
-			const data = JSON.parse(event.data);
-			console.log('Received data:', data);
-			if (!data || !data.text || !data.text.trim()) return;
-			addTextBlock(data.text.replace(/\n/g, '<br />'));
-			mainContent?.scrollTo(0, mainContent?.scrollHeight || 0);
-		};
-		websocket.onopen = (event) => {
-			websocket.send(JSON.stringify({ userId: user.id }));
-			counter = 0; // Reset counter on successful connection
-		};
-		websocket.onerror = (event) => {
-			console.log('ws error');
-			websocket.close();
-		};
-		websocket.onclose = (event) => {
-			console.log('ws over and out:', event);
-			if (event.code === 1000) {
-				console.log('WebSocket closed normally');
-				return;
-			} else {
-				console.error('WebSocket closed with error:', event.reason);
-			}
-			if (event.code < 1007 && counter < 5) {
-				setTimeout(function () {
-					connect(counter + 1);
-				}, 1000);
-			}
-		};
+		return mainContent?.childNodes[mainContent?.childNodes.length - 1] as HTMLParagraphElement;
 	}
 
 	onMount(() => {
-		connect();
 		mainContent?.scrollTo(0, mainContent?.scrollHeight || 0);
 		autoResize();
 	});
 
-	onDestroy(() => {
-		websocket?.close();
-	});
 </script>
 
 <!-- This is the main content area -->
