@@ -5,7 +5,6 @@
 	import SidePrompt from '$lib/prompt/side-prompt.svelte';
 	import UploadModal from '$lib/files/upload-modal.svelte';
 	import NoYetModal from '$lib/components/nyi/no-yet-modal.svelte';
-	import UploadedModal from '$lib/files/uploaded-modal.svelte';
 	import ProjectSettingsModal from '$lib/projects/project-settings-modal.svelte';
 	import WorkspaceSettingsModal from '$lib/workspace/workspace-settings-modal.svelte';
 
@@ -19,7 +18,6 @@
 <!-- The content area displays a list of markdown files -->
 <section>
 	<UploadModal />
-	<UploadedModal />
 	<NoYetModal />
 	<ProjectSettingsModal {data} />
 	<WorkspaceSettingsModal {data} />
@@ -27,7 +25,7 @@
 <section class="flex h-screen">
 	<div class="bg-base-200 flex w-1/4 flex-col">
 		<TopLeftNav />
-		<SidePrompt user={data.user} />
+		<SidePrompt />
 	</div>
 	<div class="flex-1 overflow-hidden">
 		<div class="bg-base-200 flex h-full flex-col">
