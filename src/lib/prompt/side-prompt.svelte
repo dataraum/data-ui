@@ -14,7 +14,7 @@
 		if (!value.trim()) return;
 		addTextBlock(value, 'bg-primary');
 
-		const response = await fetch('/aiapi/openai', {
+		const response = await fetch('/api/ai', {
 			method: 'GET',
 			headers: {
 				'content-type': 'application/json'
@@ -24,7 +24,7 @@
 		let reader = response.body?.getReader();
 		let result;
 		let decoder = new TextDecoder('utf8');
-		let paragraph = addTextBlock("");
+		let paragraph = addTextBlock('');
 		while (!result?.done) {
 			result = await reader?.read();
 			let chunk = decoder.decode(result?.value);
@@ -47,8 +47,11 @@
 		}
 	}
 
-	function addTextBlock(text:string, style = 'bg-primary/40') {
-		mainContent?.insertAdjacentHTML('beforeend', `<p class="mt-1 ${style} text-primary-content text-sm p-2 rounded">${text}</p>`);
+	function addTextBlock(text: string, style = 'bg-primary/40') {
+		mainContent?.insertAdjacentHTML(
+			'beforeend',
+			`<p class="mt-1 ${style} text-primary-content text-sm p-2 rounded">${text}</p>`
+		);
 		return mainContent?.childNodes[mainContent?.childNodes.length - 1] as HTMLParagraphElement;
 	}
 
@@ -56,7 +59,6 @@
 		mainContent?.scrollTo(0, mainContent?.scrollHeight || 0);
 		autoResize();
 	});
-
 </script>
 
 <!-- This is the main content area -->

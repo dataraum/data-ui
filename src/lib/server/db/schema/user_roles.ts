@@ -18,7 +18,6 @@ export const users = urSchema.table("user", {
     email: text("email").unique(),
     emailVerified: timestamp("email_verified", { mode: "date" }),
     image: text("image"),
-    apiToken: text("api_token").unique(),
 });
 
 export const accounts = urSchema.table(

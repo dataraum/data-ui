@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { CloudUpload } from 'lucide-svelte';
-	import { writable } from 'svelte/store';
-
 	let { error } = $props();
 
 	let fileInput: HTMLInputElement | null = null;
-	const uploading = writable(false);
+	let uploading = $state(0);
 
 	const allowed = [
 		'text/csv',
@@ -16,39 +14,39 @@
 		'.arrow'
 	];
 
-	const API_UPLOAD = '/api/upload';
-
 	function isValidFileType(file: File) {
 		return allowed.includes(file.type) || allowed.some((ext) => file.name.endsWith(ext));
 	}
 
-	async function handleDrop(event: DragEvent) {
+	async function drop(event: DragEvent) {
 		event.preventDefault();
 		error.set(null);
 		const files = event.dataTransfer?.files;
 		if (!files) return;
-
 		const validFiles = Array.from(files).filter(isValidFileType);
 		if (validFiles.length === 0) {
 			error.set('Only CSV, Parquet, and Arrow files are allowed.');
 			return;
 		}
-
-		uploading.set(true);
+		uploading = 0;
 		try {
 			for (const file of validFiles) {
+				uploading += 1;
 				const formData = new FormData();
 				formData.append('file', file);
-				const res = await fetch(API_UPLOAD, {
+				fetch('/api/files', {
 					method: 'POST',
 					body: formData
+				}).then((response) => {
+					uploading -= 1;
+					if (!response.ok) {
+						throw new Error(`Failed to upload ${file.name}`);
+					}
 				});
-				if (!res.ok) throw new Error('Upload failed');
 			}
 		} catch (e) {
 			error.set('Upload failed');
 		} finally {
-			uploading.set(false);
 			if (!error) {
 				(document.getElementById('dataUploadModal') as HTMLDialogElement)?.close();
 				(document.getElementById('dataUploadedModal') as HTMLDialogElement)?.showModal();
@@ -56,21 +54,28 @@
 		}
 	}
 
-	function handleDragOver(event: DragEvent) {
-		event.preventDefault();
+	function dragenter(e: DragEvent) {
+		e.stopPropagation();
+		e.preventDefault();
+	}
+
+	function dragover(e: DragEvent) {
+		e.stopPropagation();
+		e.preventDefault();
 	}
 </script>
 
 <button
 	class="btn bg-primary/10 dark:bg-primary/70 hover:bg-primary/20 dark:hover:bg-primary flex h-full w-full max-w-md flex-col items-center justify-center rounded-md py-4"
-	ondrop={handleDrop}
-	ondragover={handleDragOver}
+	ondrop={drop}
+	ondragover={dragover}
+	ondragenter={dragenter}
 	onclick={() => fileInput?.click()}
 	aria-label="File upload drop area"
 >
 	<CloudUpload class="h-40 w-40" />
 	<span class="text-sm">[or click to select files]</span>
-	{#if $uploading}
+	{#if uploading > 0}
 		<span class="loading loading-spinner loading-md mt-4"></span>
 	{/if}
 	<input
@@ -82,7 +87,7 @@
 		onchange={async (e) => {
 			const files = (e.target as HTMLInputElement).files;
 			if (files) {
-				await handleDrop({ preventDefault: () => {}, dataTransfer: { files } } as DragEvent);
+				await drop({ preventDefault: () => {}, dataTransfer: { files } } as DragEvent);
 			}
 		}}
 	/>
