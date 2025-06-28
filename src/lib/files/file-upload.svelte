@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { CloudUpload } from 'lucide-svelte';
-	let { error } = $props();
+	let { error, init } = $props();
 
 	let fileInput: HTMLInputElement | null = null;
 	let uploading = $state(0);
+	let uploaded = $state(false);
 
 	const allowed = [
 		'text/csv',
@@ -21,6 +22,7 @@
 	async function drop(event: DragEvent) {
 		event.preventDefault();
 		error.set(null);
+		init.set(false);
 		const files = event.dataTransfer?.files;
 		if (!files) return;
 		const validFiles = Array.from(files).filter(isValidFileType);
@@ -29,6 +31,7 @@
 			return;
 		}
 		uploading = 0;
+		uploaded = false;
 		try {
 			for (const file of validFiles) {
 				uploading += 1;
@@ -47,10 +50,7 @@
 		} catch (e) {
 			error.set('Upload failed');
 		} finally {
-			if (!error) {
-				(document.getElementById('dataUploadModal') as HTMLDialogElement)?.close();
-				(document.getElementById('dataUploadedModal') as HTMLDialogElement)?.showModal();
-			}
+			uploaded = true;
 		}
 	}
 
@@ -77,6 +77,15 @@
 	<span class="text-sm">[or click to select files]</span>
 	{#if uploading > 0}
 		<span class="loading loading-spinner loading-md mt-4"></span>
+		<h3 class="ml-2 mt-2 text-lg font-bold">Uploading {uploading} file(s)...</h3>
+	{:else if uploading === 0 && uploaded && !$init}
+		<h3 class="ml-2 mt-2 text-lg font-bold">Data successfully uploaded!</h3>
+		<p class="mt-2 ml-2 text-sm">
+			You can now use the uploaded data in your queries.
+		</p>
+		<p class="mt-2 ml-2 text-sm">
+			Or edit the data metadata in the <a href="/catalog" class="link">Data Catalog</a>.
+		</p>
 	{/if}
 	<input
 		type="file"
