@@ -46,6 +46,7 @@ export const PUT: RequestHandler = async ({ locals, request, platform }) => {
     }
 
     const formData = await request.formData();
+    const keys = [];
     for (const [_, file] of formData.entries()) {
         if (file instanceof File) {
             const key = await digestFile(file); // create a unique key for the file
@@ -76,11 +77,16 @@ export const PUT: RequestHandler = async ({ locals, request, platform }) => {
                 },
             });
             await (platform)?.env?.free_test.put(key, file);
+            keys.push(key);
         }
     }
 
     return new Response(null, {
         status: 201,
         statusText: "File uploaded successfully",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Uploaded-Keys': keys[0] || '',
+        },
     });
 }
