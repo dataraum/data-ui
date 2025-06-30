@@ -1,11 +1,8 @@
-// See https://svelte.dev/docs/kit/types#app.d.ts
-// for information about these interfaces
+// Workaround for Wrangler types not being compatible with Svelte's types
 declare global {
 	namespace App {
         interface Platform {
-            env: Env
-            cf: CfProperties
-            ctx: ExecutionContext
+            env?: Cloudflare.Env;
         }
     }
 }

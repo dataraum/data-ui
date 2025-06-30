@@ -43,6 +43,34 @@
       "when": 1751124981990,
       "tag": "0005_narrow_senator_kelly",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1751289837619,
+      "tag": "0006_nifty_agent_zero",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1751290109242,
+      "tag": "0007_elite_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1751291340330,
+      "tag": "0008_conscious_shocker",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1751292116168,
+      "tag": "0009_little_vivisector",
+      "breakpoints": true
     }
   ]
 }

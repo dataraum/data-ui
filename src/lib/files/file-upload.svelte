@@ -38,7 +38,7 @@
 				const formData = new FormData();
 				formData.append('file', file);
 				fetch('/api/files', {
-					method: 'POST',
+					method: 'PUT',
 					body: formData
 				}).then((response) => {
 					uploading -= 1;

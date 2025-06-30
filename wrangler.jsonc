@@ -10,8 +10,11 @@
 	"observability": {
 		"enabled": true
 	},
-	"compatibility_flags": [
-		"nodejs_compat"
+	"r2_buckets": [
+		{
+			"binding": "free_test",
+			"bucket_name": "free-test"
+		}
 	]
 	/**
 	 * Smart Placement
