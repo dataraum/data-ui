@@ -4,8 +4,9 @@
 	import BaseModal from '$lib/components/modal/base-modal.svelte';
 
 	import { CloudUpload } from 'lucide-svelte';
+	import { allowed, fileUploadSchema } from '.';
 
-	const { addedKeys = undefined } = $props();
+	const { lastAddedKey = undefined } = $props();
 
 	const error = writable<string | null>(null);
 
@@ -13,29 +14,20 @@
 	let uploading = $state(0);
 	let uploaded = $state(false);
 
-	const allowed = [
-		'text/csv',
-		'application/vnd.apache.arrow.file',
-		'application/vnd.apache.parquet',
-		'.csv',
-		'.parquet',
-		'.arrow'
-	];
-
-	function isValidFileType(file: File) {
-		return allowed.includes(file.type) || allowed.some((ext) => file.name.endsWith(ext));
-	}
-
 	async function drop(event: DragEvent) {
 		event.preventDefault();
 		error.set(null);
 		const uploadedFiles = event.dataTransfer?.files;
 		if (!uploadedFiles) return;
-		const validFiles = Array.from(uploadedFiles).filter(isValidFileType);
-		if (validFiles.length === 0) {
-			error.set('Only CSV, Parquet, and Arrow files are allowed.');
+
+		const result = fileUploadSchema.safeParse({ files: uploadedFiles });
+		if (result.error) {
+			error.set(result.error.issues[0].message);
+			fileInput!.value = '';
+			fileInput!.files = null;
 			return;
 		}
+		const validFiles = result.data.files;
 		uploading = 0;
 		uploaded = false;
 		try {
@@ -49,14 +41,11 @@
 				}).then((response) => {
 					uploading -= 1;
 					if (!response.ok) {
-						throw new Error(`Failed to upload ${file.name}`);
-					} else if (addedKeys) {
+						error.set(`Upload failed: ${response.statusText}`);
+					} else if (lastAddedKey) {
 						const key = response.headers.get('X-Uploaded-Keys');
-						addedKeys?.update((currentKeys: string[]) => {
-							if (key && !currentKeys.includes(key)) {
-								return [...currentKeys, key];
-							}
-							return currentKeys;
+						lastAddedKey?.update((currentKey: string) => {
+							return key ?? currentKey;
 						});
 					}
 				});
@@ -84,7 +73,7 @@
 	onclose={() => {
 		error.set(null);
 		uploaded = false;
-		addedKeys.set([]);
+		lastAddedKey.set(undefined);
 		uploading = 0;
 		if (fileInput) {
 			fileInput.value = '';
@@ -123,7 +112,7 @@
 			/>
 		</button>
 		{#if uploading === 0 && uploaded && location.pathname !== '/catalog'}
-			<div class="flex flex-col items-center mt-2">
+			<div class="mt-2 flex flex-col items-center">
 				<h3 class="mt-2 ml-2 text-lg font-bold">Data successfully uploaded!</h3>
 				<p class="mt-2 ml-2 text-sm">You can now use the uploaded data in your queries.</p>
 				<p class="mt-2 ml-2 text-sm">

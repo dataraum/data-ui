@@ -7,19 +7,25 @@
 
 	const files = $state(data.files || []);
 
-	const addedKeys = writable<string[]>([]);
+	const lastAddedKey = writable<string[]>([]);
 
-	addedKeys.subscribe((value) => {
-		console.log('Keys updated:', value);
-		if (value.length > 0) {
-			fetch(`${location.pathname}?file_id=${value[value.length - 1]}`, {
+	lastAddedKey.subscribe((value) => {
+		if (value && value.length > 0) {
+			fetch(`${location.pathname}?file_id=${value}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			}).then(async (response) => {
 				if (response.ok) {
-					files.push(await response.json());
+					const newFile = (await response.json()) as any;
+					const index = files.findIndex((file) => file.id === newFile.id);
+					if (index === -1) {
+						files.push(newFile);
+					} else {
+						// Update the existing file in the array
+						files[index] = newFile;
+					}
 				}
 			});
 		}
@@ -27,7 +33,7 @@
 </script>
 
 <section>
-	<UploadModal {addedKeys} />
+	<UploadModal {lastAddedKey} />
 </section>
 <section class="flex flex-col justify-between">
 	<div class="bg-base-200 flex w-full flex-col">
