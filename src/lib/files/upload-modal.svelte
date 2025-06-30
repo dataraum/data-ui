@@ -57,7 +57,7 @@
 								return [...currentKeys, key];
 							}
 							return currentKeys;
-						});						
+						});
 					}
 				});
 			}
@@ -107,12 +107,6 @@
 			{#if uploading > 0}
 				<span class="loading loading-spinner loading-md mt-4"></span>
 				<h3 class="mt-2 ml-2 text-lg font-bold">Uploading {uploading} file(s)...</h3>
-			{:else if uploading === 0 && uploaded && location.pathname !== '/catalog'}
-				<h3 class="mt-2 ml-2 text-lg font-bold">Data successfully uploaded!</h3>
-				<p class="mt-2 ml-2 text-sm">You can now use the uploaded data in your queries.</p>
-				<p class="mt-2 ml-2 text-sm">
-					Or edit the data metadata in the <a href="/catalog" class="link">Data Catalog</a>.
-				</p>
 			{/if}
 			<input
 				type="file"
@@ -128,6 +122,15 @@
 				}}
 			/>
 		</button>
+		{#if uploading === 0 && uploaded && location.pathname !== '/catalog'}
+			<div class="flex flex-col items-center mt-2">
+				<h3 class="mt-2 ml-2 text-lg font-bold">Data successfully uploaded!</h3>
+				<p class="mt-2 ml-2 text-sm">You can now use the uploaded data in your queries.</p>
+				<p class="mt-2 ml-2 text-sm">
+					Or edit the data metadata in the <a href="/catalog" class="link">Data Catalog</a>.
+				</p>
+			</div>
+		{/if}
 	</div>
 	<div class="mx-2 mt-4"><ErrorAlert {error} /></div>
 </BaseModal>
