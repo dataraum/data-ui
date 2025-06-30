@@ -1,4 +1,5 @@
 <script lang="ts">
+	import TopRightNavCatalog from '$lib/components/nav/top-right-nav-catalog.svelte';
 	import UploadModal from '$lib/files/upload-modal.svelte';
 	import { writable } from 'svelte/store';
 
@@ -25,10 +26,20 @@
 	});
 </script>
 
-<UploadModal {addedKeys} />
-<div class="flex flex-col p-4">
-	<h2 class="mb-4 text-2xl font-semibold">Data tables</h2>
-	<div class="overflow-auto">
+<section>
+	<UploadModal {addedKeys} />
+</section>
+<section class="flex flex-col justify-between">
+	<div class="bg-base-200 flex w-full flex-col">
+		<div class="flex flex-row justify-between">
+			<div class="mt-2 flex items-center justify-start pl-4">
+				<h1 class="mb-2 text-2xl font-bold">Data tables</h1>
+			</div>
+			<!-- TopRightNavCatalog is used to display the navigation for the catalog section -->
+			<TopRightNavCatalog />
+		</div>
+	</div>
+	<div class="overflow-y-auto">
 		<table class="table w-full">
 			<thead>
 				<tr>
@@ -65,25 +76,12 @@
 				{/each}
 				{#if files.length === 0}
 					<tr>
-						<td colspan="8" class="text-base-content/60 text-center">No data tables found.</td>
-					</tr>
-					<tr>
-						<td colspan="8" class="text-base-content/60 text-center">
-							<p class="text-sm">Newly added files will appear here after upload.</p>
+						<td colspan="8" class="text-base-content/60 text-center text-sm">
+							<p>No data tables found. Newly added files will appear here after upload.</p>
 						</td>
 					</tr>
 				{/if}
-				<tr>
-					<td colspan="8" class="text-base-content/60 text-center"
-						><button
-							class="btn btn-primary"
-							onclick={() =>
-								(document.getElementById('dataUploadModal') as HTMLDialogElement).showModal()}
-							>Upload some data</button
-						></td
-					>
-				</tr>
 			</tbody>
 		</table>
 	</div>
-</div>
+</section>

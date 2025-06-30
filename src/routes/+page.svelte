@@ -34,9 +34,7 @@
 				<div class="mt-2 flex items-center justify-start pl-4">
 					<h1 class="mb-2 text-2xl font-bold">{data.projectForm.data.projectName || "[PROJECT-NAME]"}</h1>
 				</div>
-				<div>
-					<TopRightNav />
-				</div>
+				<TopRightNav />
 			</div>
 			<!-- Content Area -->
 			<div class="bg-base-100 flex-1 overflow-y-auto px-4 py-2">
