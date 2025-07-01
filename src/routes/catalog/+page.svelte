@@ -84,6 +84,14 @@
 					<tr>
 						<td colspan="8" class="text-base-content/60 text-center text-sm">
 							<p>No data tables found. Newly added files will appear here after upload.</p>
+							<p>
+								<button
+									onclick={() =>
+										(document.getElementById('dataUploadModal') as HTMLDialogElement).showModal()}
+									class="btn btn-primary mt-2"
+									aria-label="Upload Data">Upload Data</button
+								>
+							</p>
 						</td>
 					</tr>
 				{/if}

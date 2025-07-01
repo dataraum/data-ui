@@ -33,6 +33,10 @@
 		try {
 			for (const file of validFiles) {
 				uploading += 1;
+				if (file.size === 0) {
+					error.set('File is empty');
+					continue;
+				}
 				const formData = new FormData();
 				formData.append('file', file);
 				fetch('/api/files', {

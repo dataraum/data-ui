@@ -58,7 +58,9 @@
 	"dependencies": {
 		"@auth/drizzle-adapter": "^1.9.1",
 		"@auth/sveltekit": "^1.9.2",
+		"@duckdb/duckdb-wasm": "^1.29.1-dev132.0",
 		"@neondatabase/serverless": "^1.0.1",
+		"apache-arrow": "^17.0.0",
 		"drizzle-orm": "^0.44.2",
 		"lucide-svelte": "^0.515.0",
 		"marked": "^15.0.12",
