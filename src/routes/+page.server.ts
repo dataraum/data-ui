@@ -7,6 +7,7 @@ import { getLatestProject, ProjectSchema, saveProject } from "$lib/projects";
 import { getWorkspaceData, WorkspaceSchema } from "$lib/workspace";
 import { updateWorkspace } from "$lib/workspace";
 import { auth } from "$lib/auth";
+import prisma from "$lib/prisma";
 
 export const load: PageServerLoad = async ({ request }) => {
     const session = await auth.api.getSession({
@@ -19,6 +20,11 @@ export const load: PageServerLoad = async ({ request }) => {
 
     if (!session.user.workspaceId || session.user.workspaceId === "missing-workspace-id") {
         redirect(303, `/howdidyougethere`);
+        // await prisma.workspace.create({
+        //     data: {
+        //         workspaceOwner: session.user.id,
+        //     }
+        // });
     }
 
     const projectData = await getLatestProject(session.session);
