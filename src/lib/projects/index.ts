@@ -4,7 +4,7 @@ import prisma from '$lib/prisma';
 import type { Session } from 'better-auth';
 
 export const ProjectSchema = z.object({
-    id: z.uuid().optional(),
+    id: z.string().optional(),
     projectName: z.string().min(4).max(128).nullable(),
     projectDescription: z.string().min(12).max(512).nullable(),
     projectOwner: z.string().nonoptional(),

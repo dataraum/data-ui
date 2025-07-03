@@ -4,7 +4,7 @@ import { message } from 'sveltekit-superforms';
 import { z } from 'zod/v4';
 
 export const WorkspaceSchema = z.object({
-    id: z.uuid(),
+    id: z.string().nonempty(),
     workspaceDescription: z.string().min(12).max(512).nullable(),
     workspaceOwner: z.string().nonoptional(),
 });
@@ -19,7 +19,6 @@ export async function getWorkspaceData(session: Session) {
         },
     });
     const workspace = workspaceData ?? {};
-    // console.log("Workspace Data:", workspace);
     return workspace;
 }
 
@@ -30,8 +29,7 @@ export async function updateWorkspace(wspForm: any, session: Session) {
             workspaceOwner: session.userId,
         },
         data: {
-            workspaceDescription: wspForm.data.workspacePurpose,
-            workspaceOwner: wspForm.data.workspaceOwner,
+            workspaceDescription: wspForm.data.workspaceDescription,
         },
     });
     return message(wspForm, 'Workspace updated successfully');
