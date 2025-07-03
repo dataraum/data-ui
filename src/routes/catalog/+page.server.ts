@@ -12,8 +12,8 @@ export const load: PageServerLoad = async ({ request }) => {
         redirect(303, `/signin`)
     }
 
-    if (!session.user.workspaceId) {
-        throw new Error("User workspaceId is missing");
+    if (!session.user.workspaceId || session.user.workspaceId === "missing-workspace-id") {
+        redirect(303, `/howdidyougethere`);
     }
 
     const files = await prisma.files.findMany({

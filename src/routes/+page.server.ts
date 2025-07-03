@@ -17,6 +17,10 @@ export const load: PageServerLoad = async ({ request }) => {
         redirect(303, `/signin`);
     }
 
+    if (!session.user.workspaceId || session.user.workspaceId === "missing-workspace-id") {
+        redirect(303, `/howdidyougethere`);
+    }
+
     const projectData = await getLatestProject(session.session);
     const workspaceData = await getWorkspaceData(session.session);
 
