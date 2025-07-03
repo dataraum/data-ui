@@ -35,7 +35,6 @@
 		"@testing-library/svelte": "^5.2.8",
 		"@types/node": "^24.0.2",
 		"daisyui": "^5.0.43",
-		"drizzle-kit": "^0.31.1",
 		"eslint": "^9.29.0",
 		"eslint-config-prettier": "^10.1.5",
 		"eslint-plugin-svelte": "^3.9.2",
@@ -44,6 +43,7 @@
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.6.12",
+		"prisma": "^6.11.0",
 		"svelte": "^5.34.3",
 		"svelte-check": "^4.2.1",
 		"sveltekit-superforms": "^2.27.0",
@@ -56,14 +56,12 @@
 		"zod": "^3.25.67"
 	},
 	"dependencies": {
-		"@auth/drizzle-adapter": "^1.9.1",
-		"@auth/sveltekit": "^1.9.2",
 		"@duckdb/duckdb-wasm": "^1.29.1-dev132.0",
-		"@neondatabase/serverless": "^1.0.1",
+		"@prisma/client": "^6.11.0",
+		"@prisma/extension-accelerate": "^2.0.1",
 		"apache-arrow": "^17.0.0",
-		"drizzle-orm": "^0.44.2",
+		"better-auth": "^1.2.12",
 		"lucide-svelte": "^0.515.0",
-		"marked": "^15.0.12",
-		"openai": "^5.8.2"
+		"marked": "^15.0.12"
 	}
 }

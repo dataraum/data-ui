@@ -4,7 +4,7 @@
 	import BaseModal from '$lib/components/modal/base-modal.svelte';
 
 	import { CloudUpload } from 'lucide-svelte';
-	import { allowed, fileUploadSchema } from '.';
+	import { allowed, fileUploadSchema } from ".";
 
 	const { lastAddedKey = undefined } = $props();
 

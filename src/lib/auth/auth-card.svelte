@@ -9,7 +9,7 @@
 <div
 	class="from-primary/10 to-secondary/10 flex h-screen flex-col items-center justify-center bg-gradient-to-b"
 >
-	<div class="card bg-secondary/10 w-96 shadow-lg">
+	<div class="card bg-secondary/10 w-96 shadow-lg items-center">
 		<div class="card-body">
 			<h2 class="card-title">{title}</h2>
 			{@render children()}

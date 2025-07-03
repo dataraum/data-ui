@@ -1,1 +1,0 @@
-ALTER TABLE "meta_data"."tables" ADD CONSTRAINT "tables_id_unique" UNIQUE("id");
