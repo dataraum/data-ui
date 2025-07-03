@@ -26,7 +26,6 @@ export const auth = betterAuth({
     },
     hooks: {
         after: createAuthMiddleware(async (ctx) => {
-            console.log("Auth middleware triggered for path:", ctx.path);
             if (ctx.path.startsWith("/get-session")) {
                 const session = ctx.context.session;
                 if (session) {
@@ -56,8 +55,8 @@ export const auth = betterAuth({
             jwt: {
                 definePayload: ({ user }) => {
                     return {
-                        ...user,
-                        workspaceId: user.workspaceId || "missing-workspace-id",
+                        uid: user.id,
+                        wid: user.workspaceId || "missing-workspace-id",
                     }
                 }
             }

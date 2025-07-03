@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma-app/client';
+import { PrismaClient } from '@prisma-app/client/edge';
 import { DATABASE_URL } from '$env/static/private';
 import { withAccelerate } from '@prisma/extension-accelerate';
 

@@ -1,39 +1,36 @@
 <script lang="ts">
+	import { getAuthToken } from '$lib/auth-client';
 	import TopRightNavCatalog from '$lib/components/nav/top-right-nav-catalog.svelte';
 	import UploadModal from '$lib/files/upload-modal.svelte';
-	import { writable } from 'svelte/store';
 
 	let { data } = $props();
 
-	const files = $state(data.files || []);
+	const loadedFiles = $state(data.files || []);
+	const filesUrl = `${import.meta.env.VITE_DATARAUM_API_URL}/files`;
 
-	const lastAddedKey = writable<string[]>([]);
-
-	lastAddedKey.subscribe((value) => {
-		if (value && value.length > 0) {
-			fetch(`${location.pathname}?file_id=${value}`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}).then(async (response) => {
-				if (response.ok) {
-					const newFile = (await response.json()) as any;
-					const index = files.findIndex((file) => file.id === newFile.id);
-					if (index === -1) {
-						files.push(newFile);
-					} else {
-						// Update the existing file in the array
-						files[index] = newFile;
-					}
-				}
-			});
-		}
-	});
+	async function downloadAuthenticated(e: MouseEvent, name: string) {
+		e.preventDefault();
+		const token = await getAuthToken();
+		const anchor = e.target as HTMLAnchorElement;
+		const response = await fetch(anchor.href, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		const blob = await response.blob();
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = name;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+		URL.revokeObjectURL(url);
+	}
 </script>
 
 <section>
-	<UploadModal {lastAddedKey} />
+	<UploadModal {loadedFiles} />
 </section>
 <section class="flex flex-col justify-between">
 	<div class="bg-base-200 flex w-full flex-col">
@@ -41,7 +38,6 @@
 			<div class="mt-2 flex items-center justify-start pl-4">
 				<h1 class="mb-2 text-2xl font-bold">Data tables</h1>
 			</div>
-			<!-- TopRightNavCatalog is used to display the navigation for the catalog section -->
 			<TopRightNavCatalog />
 		</div>
 	</div>
@@ -60,17 +56,18 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each files as file}
+				{#each loadedFiles as file}
 					<tr>
 						<td>{file.name}</td>
 						<td>{file.description}</td>
 						<td>{JSON.stringify(file.schema)}</td>
-						<td>{(file.size! / 1024).toFixed(2)} KB</td>
+						<td>{(Number(file.size!) / 1024).toFixed(2)} KB</td>
 						<td>{file.type}</td>
 						<td>
 							<a
 								class="link link-primary"
-								href="/api/files/{file.id}"
+								href="{filesUrl}/{file.id}/data"
+								onclick={(e) => downloadAuthenticated(e, file.name)}
 								download={file.name}
 								target="_blank"
 								rel="noopener">Download</a
@@ -80,7 +77,7 @@
 						<td>{new Date(file.updatedAt).toLocaleString()}</td>
 					</tr>
 				{/each}
-				{#if files.length === 0}
+				{#if loadedFiles.length === 0}
 					<tr>
 						<td colspan="8" class="text-base-content/60 text-center text-sm">
 							<p>No data tables found. Newly added files will appear here after upload.</p>

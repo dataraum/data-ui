@@ -4,15 +4,38 @@
 	import BaseModal from '$lib/components/modal/base-modal.svelte';
 
 	import { CloudUpload } from 'lucide-svelte';
-	import { allowed, fileUploadSchema } from ".";
+	import { allowed, fileUploadSchema } from '.';
+	import { getAuthToken } from '$lib/auth-client';
 
-	const { lastAddedKey = undefined } = $props();
+	const { loadedFiles = undefined } = $props();
 
 	const error = writable<string | null>(null);
+	const filesUrl = `${import.meta.env.VITE_DATARAUM_API_URL}/files`;
 
 	let fileInput: HTMLInputElement | null = null;
 	let uploading = $state(0);
 	let uploaded = $state(false);
+
+	async function updateLoadedFiles(key: string, authToken: string | null) {
+		fetch(`${filesUrl}/${key}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${authToken ?? ''}`
+			}
+		}).then(async (response) => {
+			if (response.ok) {
+				const newFile = (await response.json()) as any;
+				const index = loadedFiles.findIndex((file: any) => file.id === newFile.id);
+				if (index === -1) {
+					loadedFiles.push(newFile);
+				} else {
+					// Update the existing file in the array
+					loadedFiles[index] = newFile;
+				}
+			}
+		});
+	}
 
 	async function drop(event: DragEvent) {
 		event.preventDefault();
@@ -30,6 +53,8 @@
 		const validFiles = result.data.files;
 		uploading = 0;
 		uploaded = false;
+
+		const authToken = await getAuthToken();
 		try {
 			for (const file of validFiles) {
 				uploading += 1;
@@ -39,18 +64,19 @@
 				}
 				const formData = new FormData();
 				formData.append('file', file);
-				fetch('/api/files', {
+				fetch(filesUrl, {
 					method: 'PUT',
-					body: formData
-				}).then((response) => {
+					body: formData,
+					headers: {
+						Authorization: `Bearer ${authToken ?? ''}`
+					}
+				}).then(async (response) => {
 					uploading -= 1;
 					if (!response.ok) {
 						error.set(`Upload failed: ${response.statusText}`);
-					} else if (lastAddedKey) {
-						const key = response.headers.get('X-Uploaded-Keys');
-						lastAddedKey?.update((currentKey: string) => {
-							return key ?? currentKey;
-						});
+					} else if (loadedFiles) {
+						const keys = (await response.json()) as { keys: string[] };
+						updateLoadedFiles(keys.keys[0], authToken);
 					}
 				});
 			}
@@ -77,7 +103,6 @@
 	onclose={() => {
 		error.set(null);
 		uploaded = false;
-		lastAddedKey.set(undefined);
 		uploading = 0;
 		if (fileInput) {
 			fileInput.value = '';
