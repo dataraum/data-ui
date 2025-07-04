@@ -4,9 +4,9 @@
 	import TopRightNav from '$lib/components/nav/top-right-nav.svelte';
 	import SidePrompt from '$lib/prompt/side-prompt.svelte';
 	import UploadModal from '$lib/files/upload-modal.svelte';
-	import NoYetModal from '$lib/components/nyi/no-yet-modal.svelte';
 	import ProjectSettingsModal from '$lib/projects/project-settings-modal.svelte';
 	import WorkspaceSettingsModal from '$lib/workspace/workspace-settings-modal.svelte';
+	import NotYetModal from '$lib/components/nyi/not-yet-modal.svelte';
 
   	let { data } = $props();
 </script>
@@ -18,7 +18,7 @@
 <!-- The content area displays a list of markdown files -->
 <section>
 	<UploadModal />
-	<NoYetModal />
+	<NotYetModal />
 	<ProjectSettingsModal {data} />
 	<WorkspaceSettingsModal {data} />
 </section>

@@ -25,4 +25,4 @@ vite.config.ts.timestamp-*
 
 .dev.vars*
 
-/prisma/src/generated/prisma
+/src/generated/prisma
