@@ -5,7 +5,7 @@
 
 	let { data } = $props();
 
-	const loadedFiles = $state(data.files || []);
+	let loadedFiles = $state(data.files || []);
 	const filesUrl = `${import.meta.env.VITE_DATARAUM_API_URL}/files`;
 
 	async function downloadAuthenticated(e: MouseEvent, name: string) {
@@ -30,7 +30,7 @@
 </script>
 
 <section>
-	<UploadModal {loadedFiles} />
+	<UploadModal bind:loadedFiles />
 </section>
 <section class="flex flex-col justify-between">
 	<div class="bg-base-200 flex w-full flex-col">

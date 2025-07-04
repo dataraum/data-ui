@@ -7,7 +7,7 @@
 	import { allowed, fileUploadSchema } from '.';
 	import { getAuthToken } from '$lib/auth-client';
 
-	const { loadedFiles = undefined } = $props();
+	let { loadedFiles = $bindable(undefined) } = $props()
 
 	const error = writable<string | null>(null);
 	const filesUrl = `${import.meta.env.VITE_DATARAUM_API_URL}/files`;
@@ -15,27 +15,6 @@
 	let fileInput: HTMLInputElement | null = null;
 	let uploading = $state(0);
 	let uploaded = $state(false);
-
-	async function updateLoadedFiles(key: string, authToken: string | null) {
-		fetch(`${filesUrl}/${key}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${authToken ?? ''}`
-			}
-		}).then(async (response) => {
-			if (response.ok) {
-				const newFile = (await response.json()) as any;
-				const index = loadedFiles.findIndex((file: any) => file.id === newFile.id);
-				if (index === -1) {
-					loadedFiles.push(newFile);
-				} else {
-					// Update the existing file in the array
-					loadedFiles[index] = newFile;
-				}
-			}
-		});
-	}
 
 	async function drop(event: DragEvent) {
 		event.preventDefault();
@@ -75,8 +54,14 @@
 					if (!response.ok) {
 						error.set(`Upload failed: ${response.statusText}`);
 					} else if (loadedFiles) {
-						const keys = (await response.json()) as { keys: string[] };
-						updateLoadedFiles(keys.keys[0], authToken);
+						const newFile = (await response.json()) as any;
+						const index = loadedFiles.findIndex((file: any) => file.id === newFile.id);
+						if (index === -1) {
+							loadedFiles.push(newFile);
+						} else {
+							// Update the existing file in the array
+							loadedFiles[index] = newFile;
+						}
 					}
 				});
 			}

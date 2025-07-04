@@ -53,10 +53,8 @@
 		"zod": "^3.25.67"
 	},
 	"dependencies": {
-		"@duckdb/duckdb-wasm": "^1.29.1-dev132.0",
 		"@prisma/client": "^6.11.0",
 		"@prisma/extension-accelerate": "^2.0.1",
-		"apache-arrow": "^17.0.0",
 		"better-auth": "^1.2.12",
 		"lucide-svelte": "^0.515.0",
 		"marked": "^15.0.12"
