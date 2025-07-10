@@ -36,6 +36,9 @@ export const load: PageServerLoad = async ({ request }) => {
         },
     });
 
+    // TOOD filter by workspaceId
+    const projects = await prisma.project.findMany();
+
     if (!files || files.length === 0) {
         return { error: "No files found" };
     }
@@ -47,7 +50,7 @@ export const load: PageServerLoad = async ({ request }) => {
     const workspaceForm = await superValidate(workspaceData, zod4(WorkspaceSchema));
 
     return {
-        user: session.user, files: files, projectForm, workspaceForm
+        user: session.user, files: files, projects: projects, projectForm, workspaceForm
     }
 }
 
