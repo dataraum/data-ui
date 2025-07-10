@@ -67,7 +67,6 @@
 <!-- It contains a textarea for user input -->
 <!-- The textarea automatically resizes based on content -->
 <div class="items-top flex p-2">
-	<!-- List icon from lucide-svelte -->
 	<textarea
 		class="bg-primary/60 text-primary-content focus:border-primary-focus mx-1.5 flex-1 resize-none overflow-y-hidden rounded-sm p-2 text-sm text-shadow-none focus:outline-none"
 		rows="1"

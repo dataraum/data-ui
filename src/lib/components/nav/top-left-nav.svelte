@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { FileStack, FolderOpenDot, FolderSync, FolderUp } from 'lucide-svelte';
+	import { FileStack, FolderOpenDot, FolderSync, FolderUp, SquareLibrary } from 'lucide-svelte';
 </script>
 
-<div class="flex flex-col items-start justify-start px-2 py-2">
+<div class="flex flex-col items-start justify-start px-2 pt-2">
 	<ul class="menu menu-horizontal rounded-box">
 		<li>
 			<button
@@ -23,6 +23,11 @@
 			>
 				<FolderOpenDot class="h-5 w-5" />
 			</button>
+		</li>
+		<li>
+			<a href="/catalog" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Data Catalog">
+				<SquareLibrary class="h-5 w-5" />
+			</a>
 		</li>
 		<li>
 			<button

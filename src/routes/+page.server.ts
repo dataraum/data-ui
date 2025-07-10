@@ -27,6 +27,19 @@ export const load: PageServerLoad = async ({ request }) => {
         // });
     }
 
+    const files = await prisma.files.findMany({
+        where: {
+            workspaceId: session.user.workspaceId,
+        },
+        orderBy: {
+            updatedAt: 'desc',
+        },
+    });
+
+    if (!files || files.length === 0) {
+        return { error: "No files found" };
+    }
+
     const projectData = await getLatestProject(session.session);
     const workspaceData = await getWorkspaceData(session.session);
 
@@ -34,7 +47,7 @@ export const load: PageServerLoad = async ({ request }) => {
     const workspaceForm = await superValidate(workspaceData, zod4(WorkspaceSchema));
 
     return {
-        user: session.user, projectForm, workspaceForm
+        user: session.user, files: files, projectForm, workspaceForm
     }
 }
 

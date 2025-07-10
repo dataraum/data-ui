@@ -7,39 +7,38 @@
 	import ProjectSettingsModal from '$lib/projects/project-settings-modal.svelte';
 	import WorkspaceSettingsModal from '$lib/workspace/workspace-settings-modal.svelte';
 	import NotYetModal from '$lib/components/nyi/not-yet-modal.svelte';
+	import FileProjectBrowser from '$lib/browse/file-project-browser.svelte';
 
   	let { data } = $props();
 </script>
 
-<!-- This is the main layout for the application, combining navigation and content areas -->
-<!-- The layout is responsive and adapts to different screen sizes -->
-<!-- The left side contains navigation and prompt input, while the right side displays the main content -->
-<!-- The header contains the project name and navigation links -->
-<!-- The content area displays a list of markdown files -->
 <section>
 	<UploadModal />
 	<NotYetModal />
 	<ProjectSettingsModal {data} />
 	<WorkspaceSettingsModal {data} />
 </section>
-<section class="flex h-screen">
-	<div class="bg-base-200 flex w-1/4 flex-col">
+<section class="bg-base-200 flex h-screen">
+	<div class="flex w-1/5 flex-col">
 		<TopLeftNav />
-		<SidePrompt />
+		<FileProjectBrowser files={data.files} />
 	</div>
 	<div class="flex-1 overflow-hidden">
-		<div class="bg-base-200 flex h-full flex-col">
+		<div class="flex h-full flex-col">
 			<!-- Header -->
 			<div class="flex flex-row justify-between">
-				<div class="mt-2 flex items-center justify-start pl-4">
-					<h1 class="mb-2 text-2xl font-bold">{data.projectForm.data.projectName || "[PROJECT-NAME]"}</h1>
+				<div class="mt-2 flex items-center justify-start pt-2 pl-4">
+					<h1 class="mb-2 text-2xl font-bold">{data.projectForm?.data.projectName || "[PROJECT-NAME]"}</h1>
 				</div>
-				<TopRightNav />
 			</div>
 			<!-- Content Area -->
-			<div class="bg-base-100 flex-1 overflow-y-auto px-4 py-2">
+			<div class="bg-base-100 flex-1 overflow-y-auto px-4 py-2 rounded-box">
 				<MdList />
 			</div>
 		</div>
+	</div>
+	<div class="flex w-1/5 flex-col">
+		<TopRightNav />
+		<SidePrompt />
 	</div>
 </section>
