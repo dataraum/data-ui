@@ -125,12 +125,20 @@
 				}}
 			/>
 		</button>
-		{#if uploading === 0 && uploaded && location.pathname !== '/catalog'}
+		{#if uploading === 0 && uploaded}
 			<div class="mt-2 flex flex-col items-center">
 				<h3 class="mt-2 ml-2 text-lg font-bold">Data successfully uploaded!</h3>
-				<p class="mt-2 ml-2 text-sm">You can now use the uploaded data in your queries.</p>
 				<p class="mt-2 ml-2 text-sm">
-					Or edit the data metadata in the <a href="/catalog" class="link">Data Catalog</a>.
+					<button
+						class="btn btn-primary"
+						onclick={() => {
+							// Close the modal after upload
+							const modal = document.getElementById('dataUploadModal') as HTMLDialogElement;
+							modal.close();
+						}}
+					>
+						Close
+					</button>
 				</p>
 			</div>
 		{/if}

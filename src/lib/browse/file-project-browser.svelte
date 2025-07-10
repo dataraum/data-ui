@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { getAuthToken } from '$lib/auth-client';
-	import { Folder, File, FileUp, FilePlus2 } from 'lucide-svelte';
+	import UploadModal from '$lib/files/upload-modal.svelte';
+	import ProjectSettingsModal from '$lib/projects/project-settings-modal.svelte';
+	import { Folder, File, FolderKanban, SquareKanban, SquarePlus, FilePlus2 } from 'lucide-svelte';
 
-	let { files, projects } = $props();
+	let { data } = $props();
 
-	let loadedFiles = $state(files || []);
+	let loadedFiles = $state(data.files || []);
 	const filesUrl = `${import.meta.env.VITE_DATARAUM_API_URL}/files`;
 
 	async function downloadAuthenticated(e: MouseEvent, name: string) {
@@ -28,6 +30,9 @@
 	}
 </script>
 
+
+<UploadModal {loadedFiles} />
+<ProjectSettingsModal {data} />
 <div class="mt-0 flex-grow overflow-y-auto px-4 py-0">
 	<ul class="menu menu-xs bg-base-200 rounded-box w-full max-w-xs">
 		<li>
@@ -38,16 +43,17 @@
 					>
 				</summary>
 				<ul>
-                    <li>
-                        <button
-                            onclick={() => (document.getElementById('dataUploadModal') as HTMLDialogElement).showModal()}
-                        >
-                            <FileUp class="h-4 w-4" /> <span class="font-semibold">Upload Data</span>
-                        </button>
-                    </li>
-					{#each files as file}
+					<li>
+						<button
+							onclick={() =>
+								(document.getElementById('dataUploadModal') as HTMLDialogElement).showModal()}
+						>
+							<FilePlus2 class="h-4 w-4" /> <span class="font-semibold">Add Data</span>
+						</button>
+					</li>
+					{#each data.files as file}
 						<li>
-                            <button><File class="h-4 w-4" />{file.name}</button>
+							<button><File class="h-4 w-4" />{file.name}</button>
 							<!--details>
 								<summary>
 									<File class="h-4 w-4" /><a>{file.name}</a>
@@ -79,29 +85,34 @@
 				</ul>
 			</details>
 		</li>
-        <li>
+		<li>
 			<details open>
 				<summary>
-					<Folder class="h-4 w-4" /><span class="text-xs font-semibold uppercase opacity-60"
+					<FolderKanban class="h-4 w-4" /><span class="text-xs font-semibold uppercase opacity-60"
 						>Projects</span
 					>
 				</summary>
 				<ul>
-                    <li>
-                        <button
-                            onclick={() => (document.getElementById('noYetImplementedModal') as HTMLDialogElement).showModal()}
-                        >
-                            <FilePlus2 class="h-4 w-4" /> <span class="font-semibold">New Project</span>
-                        </button>
-                    </li>
-					{#each projects as project}
+					<li>
+						<button
+							onclick={() =>
+								(document.getElementById('noYetImplementedModal') as HTMLDialogElement).showModal()}
+						>
+							<SquarePlus class="h-4 w-4" /> <span class="font-semibold">New Project</span>
+						</button>
+					</li>
+					{#each data.projects as project}
 						<li>
-                            <button><File class="h-4 w-4" />{project.projectName}</button>
+							<button
+								onclick={() =>
+									(
+										document.getElementById('projectSettingsModal') as HTMLDialogElement
+									).showModal()}><SquareKanban class="h-4 w-4" />{project.projectName}</button
+							>
 						</li>
 					{/each}
 				</ul>
 			</details>
 		</li>
-
 	</ul>
 </div>
