@@ -27,27 +27,19 @@ export const load: PageServerLoad = async ({ request }) => {
         // });
     }
 
-    const files = await prisma.files.findMany({
-        where: {
-            workspaceId: session.user.workspaceId,
-        },
-        orderBy: {
-            updatedAt: 'desc',
-        },
-    });
-
-    // TOOD filter by workspaceId
-    const projects = await prisma.project.findMany();
-
-    if (!files || files.length === 0) {
-        return { error: "No files found" };
-    }
-
-    const projectData = await getLatestProject(session.session);
-    const workspaceData = await getWorkspaceData(session.session);
-
-    const projectForm = await superValidate(projectData, zod4(ProjectSchema));
-    const workspaceForm = await superValidate(workspaceData, zod4(WorkspaceSchema));
+    const [files, projects, projectForm, workspaceForm] = await Promise.all([
+        prisma.files.findMany({
+            where: {
+                workspaceId: session.user.workspaceId,
+            },
+            orderBy: {
+                updatedAt: 'desc',
+            },
+        }),
+        prisma.project.findMany(),
+        getLatestProject(session.session).then((projectData) => superValidate(projectData, zod4(ProjectSchema))),
+        getWorkspaceData(session.session).then((workspaceData) => superValidate(workspaceData, zod4(WorkspaceSchema))),
+    ]);
 
     return {
         user: session.user, files: files, projects: projects, projectForm, workspaceForm

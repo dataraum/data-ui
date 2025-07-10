@@ -14,7 +14,7 @@
 	<WorkspaceSettingsModal {data} />
 </section>
 <section class="bg-base-200 flex h-screen">
-	<div class="flex w-1/5 flex-col">
+	<div class="flex flex-col">
 		<div class="mt-2 ml-4 flex items-center justify-start pt-2 pl-4">
 			<h1 class="mb-2 text-2xl font-bold">{data.projectForm?.data.projectName || "[PROJECT-NAME]"}</h1>
 		</div>
