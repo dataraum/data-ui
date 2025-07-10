@@ -11,7 +11,7 @@
 	</summary>
 	<ul>
 		<li>
-			<button
+			<button class="flex items-center gap-1 text-left"
 				onclick={() =>
 					(document.getElementById('noYetImplementedModal') as HTMLDialogElement).showModal()}
 			>
@@ -20,7 +20,7 @@
 		</li>
 		{#each projects as project}
 			<li>
-				<button
+				<button class="flex cursor-pointer items-center gap-1 text-left hover:underline"
 					onclick={() =>
 						(document.getElementById('projectSettingsModal') as HTMLDialogElement).showModal()}
 					><SquareKanban class="h-4 w-4" />{project.projectName}</button
