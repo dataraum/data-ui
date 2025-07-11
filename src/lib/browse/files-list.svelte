@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getAuthToken } from '$lib/auth-client';
 	import { File, FileDown, FilePlus2, Folder } from 'lucide-svelte';
-	let { files, selectedData } = $props();
+	let { files } = $props();
 
 	const filesUrl = `${import.meta.env.VITE_DATARAUM_API_URL}/files`;
 
@@ -24,13 +24,6 @@
 		document.body.removeChild(a);
 		URL.revokeObjectURL(url);
 	}
-
-	function setSelectedData(file: any) {
-        //console.log('Setting selected data:', $inspect(file));
-		if (selectedData) {
-            selectedData.set(file);
-        };
-	}
 </script>
 
 <details open>
@@ -41,34 +34,28 @@
 	</summary>
 	<ul>
 		<li>
-			<button class="flex items-center gap-1 text-left"
+			<button
+				class="flex items-center gap-1 text-left"
 				onclick={() =>
 					(document.getElementById('dataUploadModal') as HTMLDialogElement).showModal()}
 			>
-				<FilePlus2 class="h-4 w-4" /><span class="hidden lg:inline font-semibold">Add Data</span>
+				<FilePlus2 class="h-4 w-4" /><span class="hidden font-semibold lg:inline">Add Data</span>
 			</button>
 		</li>
 		{#each files as file}
 			<li>
 				<details>
 					<summary>
-						<button
-							class="flex cursor-pointer items-center gap-1 text-left hover:underline"
-							onclick={() => setSelectedData(file)}
+						<a
+							class="link link-hover flex items-center gap-1"
+							href="/data/{file.id}"
 						>
 							<File class="h-4 w-4" />
 							<span class="hidden lg:inline">{file.name}</span>
-						</button>
+						</a>
 					</summary>
 					<ul>
 						<li>
-							<!--div class="text-xs lowercase opacity-80">
-											updated: {new Date(file.updatedAt).toLocaleDateString(undefined, {
-												year: 'numeric',
-												month: '2-digit',
-												day: '2-digit'
-											})}
-										</div-->
 							<div class="text-xs lowercase opacity-80">
 								<FileDown class="h-4 w-4" /><a
 									class="link link-hover"

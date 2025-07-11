@@ -4,7 +4,7 @@
 	import FilesList from './files-list.svelte';
 	import ProjectsList from './projects-list.svelte';
 
-	let { data, selectedData } = $props();
+	let { data } = $props();
 
 	let loadedFiles = $state(data.files || []);
 </script>
@@ -14,7 +14,7 @@
 <div class="mt-0 flex-grow overflow-y-auto px-4 py-0">
 	<ul class="menu menu-xs bg-base-200 rounded-box w-full max-w-xs">
 		<li>
-			<FilesList files={loadedFiles} {selectedData} />
+			<FilesList files={loadedFiles} />
 		</li>
 		<li>
 			<ProjectsList projects={data.projects} />

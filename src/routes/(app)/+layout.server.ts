@@ -1,15 +1,13 @@
 import { redirect } from "@sveltejs/kit"
-import type { Actions, PageServerLoad } from "./$types"
-import { fail } from '@sveltejs/kit';
+import type { LayoutServerLoad } from "./$types"
 import { superValidate } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { getLatestProject, ProjectSchema, saveProject } from "$lib/projects";
+import { getLatestProject, ProjectSchema } from "$lib/projects";
 import { getWorkspaceData, WorkspaceSchema } from "$lib/workspace";
-import { updateWorkspace } from "$lib/workspace";
 import { auth } from "$lib/auth";
 import prisma from "$lib/prisma";
 
-export const load: PageServerLoad = async ({ request }) => {
+export const load: LayoutServerLoad = async ({ request }) => {
     const session = await auth.api.getSession({
         headers: request.headers
     });
@@ -46,29 +44,31 @@ export const load: PageServerLoad = async ({ request }) => {
     }
 }
 
-export const actions = {
+// TODO move this to API
+// 
+// export const actions = {
 
-    projects: async ({ request, locals }) => {
-        const session = await auth.api.getSession({
-            headers: request.headers
-        });
-        const projectForm = await superValidate(request, zod4(ProjectSchema));
+//     projects: async ({ request, locals }) => {
+//         const session = await auth.api.getSession({
+//             headers: request.headers
+//         });
+//         const projectForm = await superValidate(request, zod4(ProjectSchema));
 
-        console.log("Project Form Data:", projectForm.data);
+//         console.log("Project Form Data:", projectForm.data);
 
-        if (!projectForm.valid) return fail(400, { projectForm });
+//         if (!projectForm.valid) return fail(400, { projectForm });
 
-        return saveProject(projectForm, session?.session!);
-    },
+//         return saveProject(projectForm, session?.session!);
+//     },
 
-    workspace: async ({ request, locals }) => {
-        const session = await auth.api.getSession({
-            headers: request.headers
-        });
-        const workspaceForm = await superValidate(request, zod4(WorkspaceSchema));
+//     workspace: async ({ request, locals }) => {
+//         const session = await auth.api.getSession({
+//             headers: request.headers
+//         });
+//         const workspaceForm = await superValidate(request, zod4(WorkspaceSchema));
 
-        if (!workspaceForm.valid) return fail(400, { workspaceForm });
+//         if (!workspaceForm.valid) return fail(400, { workspaceForm });
 
-        return updateWorkspace(workspaceForm, session?.session!);
-    }
-} satisfies Actions;
+//         return updateWorkspace(workspaceForm, session?.session!);
+//     }
+// } satisfies Actions;
