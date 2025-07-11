@@ -5,13 +5,10 @@
 	import NotYetModal from '$lib/components/nyi/not-yet-modal.svelte';
 	import FileProjectBrowser from '$lib/browse/file-project-browser.svelte';
 	import type { LayoutProps } from './$types';
-	import '../../app.css';
 	import { getAuthToken } from '$lib/auth-client';
 	import { onMount } from 'svelte';
 
 	let { data, children }: LayoutProps = $props();
-
-
 
 	onMount(async () => {
 		console.log("Token:", await getAuthToken());
@@ -31,11 +28,5 @@
 		</div>
 		<FileProjectBrowser {data} />
 	</div>
-	<div class="flex-1 overflow-hidden">
-		{@render children()}
-	</div>
-	<div class="flex w-1/5 flex-col">
-		<TopRightNav />
-		<SidePrompt />
-	</div>
+	{@render children()}
 </section>

@@ -9,6 +9,7 @@
 
 	async function getReport(type: string) {
 		fetching = true;
+		console.log(`Fetching report of type: ${type} for file: ${JSON.stringify(file)}`);
 		if (!file) return;
 		try {
 			const res = await fetch(

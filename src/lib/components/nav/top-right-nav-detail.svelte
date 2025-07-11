@@ -1,10 +1,15 @@
 <script lang="ts">
 	import { signOut } from '$lib/auth-client';
-	import { LogOut, Share2, SlidersHorizontal } from 'lucide-svelte';
+	import { House, LogOut, Share2, SlidersHorizontal } from 'lucide-svelte';
 </script>
 
 <div class="flex flex-col items-end justify-end px-2 py-2">
 	<ul class="menu menu-horizontal rounded-box">
+		<li>
+			<a href="/" class="tooltip tooltip-right lg:tooltip-bottom" data-tip="Shared Data">
+				<House class="h-5 w-5" />
+			</a>
+		</li>
 		<li>
 			<button
 				onclick={() =>
@@ -19,7 +24,9 @@
 			<button
 				onclick={() =>
 					(document.getElementById('workspaceSettingsModal') as HTMLDialogElement).showModal()}
-					 class="tooltip tooltip-bottom" data-tip="Settings">
+				class="tooltip tooltip-bottom"
+				data-tip="Settings"
+			>
 				<SlidersHorizontal class="h-5 w-5" />
 			</button>
 		</li>
